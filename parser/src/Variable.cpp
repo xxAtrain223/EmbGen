@@ -1,9 +1,15 @@
 #include "EmbGen/Variable.hpp"
 
-namespace emb::gen::parser
+namespace emb
 {
-    Variable::Variable(const tinyxml2::XMLElement* xml) :
-        XmlElement(xml)
+    namespace gen
     {
+        namespace parser
+        {
+            Variable::Variable(const tinyxml2::XMLElement* xml) :
+                XmlElement(xml)
+            {
+            }
+        }
     }
 }

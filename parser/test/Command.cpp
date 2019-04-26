@@ -1,9 +1,15 @@
 #include "EmbGen/Command.hpp"
 
-namespace emb::gen::parser
+namespace emb
 {
-    namespace test
+    namespace gen
     {
-        
+        namespace test
+        {
+            namespace test
+            {
+
+            }
+        }
     }
 }

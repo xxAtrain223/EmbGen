@@ -1,9 +1,15 @@
 #include "EmbGen/Stop.hpp"
 
-namespace emb::gen::parser
+namespace emb
 {
-    Stop::Stop(const tinyxml2::XMLElement* xml) :
-        XmlElement(xml)
+    namespace gen
     {
+        namespace parser
+        {
+            Stop::Stop(const tinyxml2::XMLElement* xml) :
+                XmlElement(xml)
+            {
+            }
+        }
     }
 }

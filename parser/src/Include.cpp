@@ -1,9 +1,15 @@
 #include "EmbGen/Include.hpp"
 
-namespace emb::gen::parser
+namespace emb
 {
-    Include::Include(const tinyxml2::XMLElement* xml) :
-        XmlElement(xml)
+    namespace gen
     {
+        namespace parser
+        {
+            Include::Include(const tinyxml2::XMLElement* xml) :
+                XmlElement(xml)
+            {
+            }
+        }
     }
 }

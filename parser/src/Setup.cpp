@@ -1,9 +1,15 @@
 #include "EmbGen/Setup.hpp"
 
-namespace emb::gen::parser
+namespace emb
 {
-    Setup::Setup(const tinyxml2::XMLElement* xml) :
-        XmlElement(xml)
+    namespace gen
     {
+        namespace parser
+        {
+            Setup::Setup(const tinyxml2::XMLElement* xml) :
+                XmlElement(xml)
+            {
+            }
+        }
     }
 }

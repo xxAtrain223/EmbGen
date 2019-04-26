@@ -1,9 +1,15 @@
 #include "EmbGen/Code.hpp"
 
-namespace emb::gen::parser
+namespace emb
 {
-    Code::Code(const tinyxml2::XMLElement* xml) :
-        XmlElement(xml)
+    namespace gen
     {
+        namespace parser
+        {
+            Code::Code(const tinyxml2::XMLElement* xml) :
+                XmlElement(xml)
+            {
+            }
+        }
     }
 }

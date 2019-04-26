@@ -8,9 +8,7 @@ add_subdirectory(parser)
 
 if (EMB_ENABLE_TESTING)
     enable_testing()
-    set(gtest_force_shared_crt TRUE CACHE BOOL "")
-
     cmake_policy(SET CMP0057 NEW)
     include(GoogleTest)
-    #gtest_add_tests(EmbGenParserTest "" AUTO)
+    gtest_add_tests(EmbGenParserTest "" AUTO)
 endif()

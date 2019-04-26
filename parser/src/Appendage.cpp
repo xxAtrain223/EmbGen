@@ -1,9 +1,15 @@
 #include "EmbGen/Appendage.hpp"
 
-namespace emb::gen::parser
+namespace emb
 {
-    Appendage::Appendage(const tinyxml2::XMLElement* xml) :
-        XmlElement(xml)
+    namespace gen
     {
+        namespace parser
+        {
+            Appendage::Appendage(const tinyxml2::XMLElement* xml) :
+                XmlElement(xml)
+            {
+            }
+        }
     }
 }

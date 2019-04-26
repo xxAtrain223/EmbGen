@@ -1,9 +1,15 @@
 #include "EmbGen/XmlElement.hpp"
+#include <gtest/gtest.h>
 
-namespace emb::gen::parser
+namespace emb
 {
-    namespace test
+    namespace gen
     {
-        
+        namespace parser
+        {
+            namespace test
+            {
+            }
+        }
     }
 }
