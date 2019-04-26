@@ -1,0 +1,6 @@
+[submodule "ext/googletest"]
+	path = ext/googletest
+	url = https://github.com/google/googletest.git
+[submodule "ext/tinyxml2"]
+	path = ext/tinyxml2
+	url = https://github.com/leethomason/tinyxml2.git
