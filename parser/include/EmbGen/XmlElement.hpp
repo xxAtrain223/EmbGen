@@ -26,6 +26,10 @@ namespace emb
             public:
                 XmlElement(const tinyxml2::XMLElement* xml);
 
+                std::string getText() const;
+
+                int getLineNum() const;
+
                 const tinyxml2::XMLAttribute* getAttribute(std::string name);
 
                 bool isAttributesEmpty() const;
@@ -33,10 +37,6 @@ namespace emb
                 std::vector<const tinyxml2::XMLElement*> getElements(std::string name);
 
                 bool isElementsEmpty() const;
-
-                std::string getText() const;
-
-                int getLineNum() const;
             };
         }
     }
