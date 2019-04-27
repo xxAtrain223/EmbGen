@@ -32,7 +32,7 @@ namespace emb
 
                     XmlElement element(tinyElement);
 
-                    ASSERT_EQ(element.getLineNum(), 1);
+                    ASSERT_EQ(element.getLineNum(), 0);
                 }
 
                 TEST(parser_XmlElement, GetAttribute)
@@ -80,13 +80,13 @@ namespace emb
 
                     XmlElement element(tinyElement);
 
-                    EXPECT_FALSE(element.isAttributesEmpty());
+                    EXPECT_FALSE(element.isElementsEmpty());
                     EXPECT_EQ(element.getElements("bar").size(), 2);
-                    EXPECT_FALSE(element.isAttributesEmpty());
+                    EXPECT_FALSE(element.isElementsEmpty());
                     EXPECT_EQ(element.getElements("baz").size(), 1);
-                    EXPECT_TRUE(element.isAttributesEmpty());
+                    EXPECT_TRUE(element.isElementsEmpty());
                     EXPECT_EQ(element.getElements("bar").size(), 0);
-                    EXPECT_TRUE(element.isAttributesEmpty());
+                    EXPECT_TRUE(element.isElementsEmpty());
                 }
             }
         }

@@ -19,7 +19,7 @@ namespace emb
         {
             class XmlElement
             {
-                const tinyxml2::XMLElement* tinyElement;
+                const tinyxml2::XMLElement* m_tinyElement;
                 std::map<std::string, const tinyxml2::XMLAttribute*> m_attributes;
                 std::multimap<std::string, const tinyxml2::XMLElement*> m_elements;
 
