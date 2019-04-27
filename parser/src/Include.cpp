@@ -10,6 +10,16 @@ namespace emb
                 XmlElement(xml)
             {
             }
+
+            std::string Include::getValue() const
+            {
+                return "";
+            }
+
+            bool Include::isStandard() const
+            {
+                return false;
+            }
         }
     }
 }

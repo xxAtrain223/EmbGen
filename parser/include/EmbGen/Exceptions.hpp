@@ -29,6 +29,7 @@ namespace emb
             };
 
             NEW_EMB_EX(AttributeException);
+            NEW_EMB_EX(ElementException);
         }
     }
 }

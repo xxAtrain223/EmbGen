@@ -11,6 +11,16 @@ namespace emb
         {
             namespace test
             {
+                TEST(parser_XmlElement, GetName)
+                {
+                    tinyxml2::XMLDocument tinyDocument;
+                    tinyxml2::XMLElement* tinyElement = tinyDocument.NewElement("foo");
+
+                    XmlElement element(tinyElement);
+
+                    ASSERT_EQ(element.getName(), "foo");
+                }
+
                 TEST(parser_XmlElement, GetText)
                 {
                     tinyxml2::XMLDocument tinyDocument;

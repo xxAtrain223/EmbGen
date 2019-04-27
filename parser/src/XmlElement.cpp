@@ -24,6 +24,11 @@ namespace emb
                 }
             }
 
+            std::string XmlElement::getName() const
+            {
+                return m_tinyElement->Name();
+            }
+
             std::string XmlElement::getText() const
             {
                 return m_tinyElement->GetText();
