@@ -12,8 +12,11 @@ namespace emb
     {
         namespace parser
         {
-            class Variable : public XmlElement
+            class Variable : private XmlElement
             {
+                std::string m_type, m_name;
+                bool m_core;
+                std::vector<Parameter> m_parameters;
 
             public:
                 Variable(const tinyxml2::XMLElement* xml);
