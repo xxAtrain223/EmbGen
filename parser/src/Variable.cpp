@@ -10,6 +10,22 @@ namespace emb
                 XmlElement(xml)
             {
             }
+            std::string Variable::getType() const
+            {
+                return "";
+            }
+            std::string Variable::getName() const
+            {
+                return "";
+            }
+            bool Variable::isCore() const
+            {
+                return false;
+            }
+            std::vector<Parameter> Variable::getParameters() const
+            {
+                return std::vector<Parameter>();
+            }
         }
     }
 }

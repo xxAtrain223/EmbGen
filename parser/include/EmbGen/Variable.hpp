@@ -2,6 +2,9 @@
 #define EMBGEN_PARSER_VARIABLE_HPP
 
 #include "EmbGen/XmlElement.hpp"
+#include "EmbGen/Parameter.hpp"
+
+#include <vector>
 
 namespace emb
 {
@@ -12,9 +15,16 @@ namespace emb
             class Variable : public XmlElement
             {
 
-
             public:
                 Variable(const tinyxml2::XMLElement* xml);
+
+                std::string getType() const;
+
+                std::string getName() const;
+
+                bool isCore() const;
+
+                std::vector<Parameter> getParameters() const;
             };
         }
     }
