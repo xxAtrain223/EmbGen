@@ -15,6 +15,16 @@ namespace emb
 
             public:
                 Parameter(const tinyxml2::XMLElement* xml);
+
+                std::string getType() const;
+                
+                std::string getName() const;
+
+                tinyxml2::XMLAttribute* getMin() const;
+
+                tinyxml2::XMLAttribute* getMax() const;
+
+                bool isCore() const;
             };
         }
     }
