@@ -49,16 +49,16 @@ namespace emb
 
                     tinyElement->SetAttribute("type", "int16_t");
                     tinyElement->SetAttribute("name", "val");
-                    tinyElement->SetAttribute("min", -512);
-                    tinyElement->SetAttribute("max", 1024);
+                    tinyElement->SetAttribute("min", "-512");
+                    tinyElement->SetAttribute("max", "1024");
 
                     Parameter parameter(tinyElement);
 
                     ASSERT_EQ(parameter.getType(), "int16_t");
                     ASSERT_EQ(parameter.getName(), "val");
                     ASSERT_FALSE(parameter.isCore());
-                    ASSERT_EQ(parameter.getMin<int16_t>(), -512);
-                    ASSERT_EQ(parameter.getMax<int16_t>(), 1024);
+                    ASSERT_EQ(parameter.getMin(), "-512");
+                    ASSERT_EQ(parameter.getMax(), "1024");
                 }
 
                 TEST(parser_Parameter, MissingType)
@@ -104,24 +104,6 @@ namespace emb
                     tinyElement->InsertEndChild(tinyDocument.NewElement("foo"));
 
                     ASSERT_THROW(Parameter parameter(tinyElement), ElementException);
-                }
-
-                TEST(parser_Parameter, InvalidValidationType)
-                {
-                    tinyxml2::XMLDocument tinyDocument;
-                    tinyxml2::XMLElement* tinyElement = tinyDocument.NewElement("parameter");
-
-                    tinyElement->SetAttribute("type", "float");
-                    tinyElement->SetAttribute("name", "val");
-                    tinyElement->SetAttribute("max", 3.14159f);
-
-                    Parameter parameter(tinyElement);
-
-                    ASSERT_EQ(parameter.getType(), "float");
-                    ASSERT_EQ(parameter.getName(), "val");
-                    ASSERT_FALSE(parameter.isCore());
-                    ASSERT_THROW(parameter.getMin<float>(), AttributeException);
-                    ASSERT_THROW(parameter.getMax<uint8_t>(), AttributeException);
                 }
             }
         }

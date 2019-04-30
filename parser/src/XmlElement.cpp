@@ -50,7 +50,7 @@ namespace emb
                 }
                 catch (std::out_of_range)
                 {
-                    throw AttributeException("Attribute " + name + "missing on line " + std::to_string(getLineNum()));
+                    throw AttributeException("Attribute " + name + " missing on line " + std::to_string(getLineNum()));
                 }
             }
 

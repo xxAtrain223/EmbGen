@@ -1,4 +1,6 @@
 #include "EmbGen/Parameter.hpp"
+#include <tinyxml2.h>
+#include <string>
 
 namespace emb
 {
@@ -9,66 +11,70 @@ namespace emb
             Parameter::Parameter(const tinyxml2::XMLElement* xml) :
                 XmlElement(xml)
             {
+                m_type = getAttribute("type")->Value();
+                m_name = getAttribute("name")->Value();
+
+                try
+                {
+                    m_core = getAttribute("core")->BoolValue();
+                }
+                catch (AttributeException)
+                {
+                    m_core = false;
+                }
+
+                try
+                {
+                    m_min = getAttribute("min")->Value();
+                }
+                catch (AttributeException)
+                {
+                    m_min = "";
+                }
+
+                try
+                {
+                    m_max = getAttribute("max")->Value();
+                }
+                catch (AttributeException)
+                {
+                    m_max = "";
+                }
+
+                if (!isAttributesEmpty())
+                {
+                    throw AttributeException("Extra attributes for Include on line " + std::to_string(getLineNum()));
+                }
+
+                if (!isElementsEmpty())
+                {
+                    throw ElementException("Extra elements for Include on line " + std::to_string(getLineNum()));
+                }
             }
 
             std::string Parameter::getType() const
             {
-                return std::string();
+                return m_type;
             }
 
             std::string Parameter::getName() const
             {
-                return std::string();
+                return m_name;
+            }
+
+            std::string Parameter::getMin() const
+            {
+                return m_min;
+            }
+
+            std::string Parameter::getMax() const
+            {
+                return m_max;
             }
 
             bool Parameter::isCore() const
             {
-                return false;
-            }
-
-            bool Parameter::read(const tinyxml2::XMLAttribute* attr, uint8_t& val) const
-            {
-                return false;
-            }
-
-            bool Parameter::read(const tinyxml2::XMLAttribute* attr, uint16_t& val) const
-            {
-                return false;
-            }
-
-            bool Parameter::read(const tinyxml2::XMLAttribute* attr, uint32_t& val) const
-            {
-                return false;
-            }
-
-            bool Parameter::read(const tinyxml2::XMLAttribute* attr, uint64_t& val) const
-            {
-                return false;
-            }
-
-            bool Parameter::read(const tinyxml2::XMLAttribute* attr, int8_t& val) const
-            {
-                return false;
-            }
-
-            bool Parameter::read(const tinyxml2::XMLAttribute* attr, int16_t& val) const
-            {
-                return false;
-            }
-
-            bool Parameter::read(const tinyxml2::XMLAttribute* attr, int32_t& val) const
-            {
-                return false;
-            }
-
-            bool Parameter::read(const tinyxml2::XMLAttribute* attr, int64_t& val) const
-            {
-                return false;
-            }
-
-            bool Parameter::read(const tinyxml2::XMLAttribute* attr, float& val) const
-            {
-                return false;
+                return m_core;
             }
         }
     }

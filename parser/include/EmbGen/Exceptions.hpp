@@ -8,7 +8,7 @@
     {                                                            \
     public:                                                      \
         name(const std::string& message = "") :                  \
-            emb::gen::parser::BaseException(#name ":" + message) \
+            emb::gen::parser::BaseException(#name ": " + message) \
         {                                                        \
         }                                                        \
     };                                                           \

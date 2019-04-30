@@ -53,15 +53,17 @@ namespace emb
                     tinyElement->SetAttribute("name", "bar");
                     tinyElement->SetAttribute("core", false);
 
-                    tinyElement->InsertEndChild(tinyDocument.NewElement("parameter"));
-                    tinyElement->InsertEndChild(tinyDocument.NewElement("parameter"));
+                    tinyxml2::XMLElement* tinyParameter = tinyDocument.NewElement("parameter");
+                    tinyParameter->SetAttribute("type", "int16_t");
+                    tinyParameter->SetAttribute("name", "baz");
+                    tinyElement->InsertEndChild(tinyParameter);
 
                     Variable variable(tinyElement);
 
                     ASSERT_EQ(variable.getType(), "Foo");
                     ASSERT_EQ(variable.getName(), "bar");
                     ASSERT_FALSE(variable.isCore());
-                    ASSERT_EQ(variable.getParameters().size(), 2);
+                    ASSERT_EQ(variable.getParameters().size(), 1);
                 }
 
                 TEST(parser_Variable, MissingType)
@@ -106,8 +108,10 @@ namespace emb
                     tinyElement->SetAttribute("name", "bar");
                     tinyElement->SetAttribute("core", false);
 
-                    tinyElement->InsertEndChild(tinyDocument.NewElement("parameter"));
-                    tinyElement->InsertEndChild(tinyDocument.NewElement("parameter"));
+                    tinyxml2::XMLElement* tinyParameter = tinyDocument.NewElement("parameter");
+                    tinyParameter->SetAttribute("type", "float");
+                    tinyParameter->SetAttribute("name", "baz");
+                    tinyElement->InsertEndChild(tinyParameter);
                     tinyElement->InsertEndChild(tinyDocument.NewElement("extraElement"));
 
                     ASSERT_THROW(Variable variable(tinyElement), ElementException);
