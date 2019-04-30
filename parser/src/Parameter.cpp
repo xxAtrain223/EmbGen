@@ -21,17 +21,52 @@ namespace emb
                 return std::string();
             }
 
-            tinyxml2::XMLAttribute* Parameter::getMin() const
-            {
-                return nullptr;
-            }
-
-            tinyxml2::XMLAttribute* Parameter::getMax() const
-            {
-                return nullptr;
-            }
-
             bool Parameter::isCore() const
+            {
+                return false;
+            }
+
+            bool Parameter::read(const tinyxml2::XMLAttribute* attr, uint8_t& val) const
+            {
+                return false;
+            }
+
+            bool Parameter::read(const tinyxml2::XMLAttribute* attr, uint16_t& val) const
+            {
+                return false;
+            }
+
+            bool Parameter::read(const tinyxml2::XMLAttribute* attr, uint32_t& val) const
+            {
+                return false;
+            }
+
+            bool Parameter::read(const tinyxml2::XMLAttribute* attr, uint64_t& val) const
+            {
+                return false;
+            }
+
+            bool Parameter::read(const tinyxml2::XMLAttribute* attr, int8_t& val) const
+            {
+                return false;
+            }
+
+            bool Parameter::read(const tinyxml2::XMLAttribute* attr, int16_t& val) const
+            {
+                return false;
+            }
+
+            bool Parameter::read(const tinyxml2::XMLAttribute* attr, int32_t& val) const
+            {
+                return false;
+            }
+
+            bool Parameter::read(const tinyxml2::XMLAttribute* attr, int64_t& val) const
+            {
+                return false;
+            }
+
+            bool Parameter::read(const tinyxml2::XMLAttribute* attr, float& val) const
             {
                 return false;
             }
