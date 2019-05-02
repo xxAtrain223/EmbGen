@@ -10,6 +10,16 @@ namespace emb
                 XmlElement(xml)
             {
             }
+
+            Code::Insert Code::getInsert() const
+            {
+                return Code::Insert::Each;
+            }
+
+            std::string Code::getText() const
+            {
+                return "";
+            }
         }
     }
 }

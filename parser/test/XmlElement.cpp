@@ -98,6 +98,16 @@ namespace emb
                     EXPECT_EQ(element.getElements("bar").size(), 0);
                     EXPECT_TRUE(element.isElementsEmpty());
                 }
+
+                TEST(parser_XmlElement, GetText_ElementException)
+                {
+                    tinyxml2::XMLDocument tinyDocument;
+                    tinyxml2::XMLElement* tinyElement = tinyDocument.NewElement("foo");
+
+                    XmlElement element(tinyElement);
+
+                    ASSERT_THROW(element.getText(), ElementException);
+                }
             }
         }
     }

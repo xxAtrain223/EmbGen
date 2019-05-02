@@ -31,7 +31,14 @@ namespace emb
 
             std::string XmlElement::getText() const
             {
-                return m_tinyElement->GetText();
+                try
+                {
+                    return m_tinyElement->GetText();
+                }
+                catch (...)
+                {
+                    throw ElementException("Element does not have text on line " + std::to_string(getLineNum()));
+                }
             }
 
             int XmlElement::getLineNum() const

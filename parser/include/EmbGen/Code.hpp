@@ -14,7 +14,17 @@ namespace emb
 
 
             public:
+                enum class Insert
+                {
+                    Each,
+                    Once
+                };
+
                 Code(const tinyxml2::XMLElement* xml);
+
+                Insert getInsert() const;
+
+                std::string getText() const;
             };
         }
     }
