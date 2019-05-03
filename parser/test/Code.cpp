@@ -71,7 +71,8 @@ namespace emb
                     Code code(tinyElement);
 
                     ASSERT_EQ(code.getInsert(), Code::Insert::Once);
-                    ASSERT_EQ(code.getText(),"    // Whitespace Test");
+                    std::string text = code.getText();
+                    ASSERT_EQ(text, "    // Whitespace Test");
                 }
 
                 TEST(parser_Code, InvalidInsert)

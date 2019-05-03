@@ -11,8 +11,6 @@ namespace emb
         {
             class Code : public XmlElement
             {
-
-
             public:
                 enum class Insert
                 {
@@ -25,6 +23,12 @@ namespace emb
                 Insert getInsert() const;
 
                 std::string getText() const;
+
+            private:
+                std::string m_text;
+                Insert m_insert;
+
+                std::string processCode(const std::string& text);
             };
         }
     }
