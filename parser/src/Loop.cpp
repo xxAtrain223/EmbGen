@@ -10,6 +10,11 @@ namespace emb
                 XmlElement(xml)
             {
             }
+
+            std::vector<Code> Loop::getCode() const
+            {
+                return std::vector<Code>();
+            }
         }
     }
 }
