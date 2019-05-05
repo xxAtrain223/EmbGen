@@ -13,7 +13,7 @@ namespace emb
         {
             class Loop : public XmlElement
             {
-                
+                std::vector<Code> m_code;
 
             public:
                 Loop(const tinyxml2::XMLElement* xml);
