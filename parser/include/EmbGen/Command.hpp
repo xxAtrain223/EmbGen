@@ -15,7 +15,9 @@ namespace emb
         {
             class Command : public XmlElement
             {
-
+                std::string m_name;
+                std::vector<Parameter> m_parameters;
+                std::shared_ptr<Code> m_code;
 
             public:
                 Command(const tinyxml2::XMLElement* xml);

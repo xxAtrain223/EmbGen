@@ -115,7 +115,7 @@ namespace emb
 
                     tinyElement->SetAttribute("name", "NoCode");
 
-                    ASSERT_THROW(Command command(tinyElement), AttributeException);
+                    ASSERT_THROW(Command command(tinyElement), ElementException);
                 }
 
                 TEST(parser_Command, ExtraAttribute)
