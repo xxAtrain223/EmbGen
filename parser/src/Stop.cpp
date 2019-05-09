@@ -10,6 +10,16 @@ namespace emb
                 XmlElement(xml)
             {
             }
+            
+            std::string Stop::getCommand() const
+            {
+                return "";
+            }
+            
+            std::shared_ptr<Code> Stop::getCode() const
+            {
+                return nullptr;
+            }
         }
     }
 }
