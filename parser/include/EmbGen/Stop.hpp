@@ -3,6 +3,7 @@
 
 #include "EmbGen/XmlElement.hpp"
 #include "EmbGen/Code.hpp"
+#include <memory>
 
 namespace emb
 {
