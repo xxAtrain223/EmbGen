@@ -12,7 +12,8 @@ namespace emb
         {
             class Stop : public XmlElement
             {
-
+                std::string m_command;
+                std::shared_ptr<Code> m_code;
 
             public:
                 Stop(const tinyxml2::XMLElement* xml);

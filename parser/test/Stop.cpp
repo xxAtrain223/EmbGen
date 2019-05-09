@@ -51,7 +51,7 @@ namespace emb
                     tinyElement->SetAttribute("command", "detach");
                     tinyElement->InsertEndChild(tinyCode);
 
-                    ASSERT_THROW(Stop stop(tinyElement), BaseException); // Not sure if this should throw Attribute or Element Exception
+                    ASSERT_THROW(Stop stop(tinyElement), BaseException);
                 }
 
                 TEST(parser_Stop, NoCommandOrCode)
@@ -59,7 +59,23 @@ namespace emb
                     tinyxml2::XMLDocument tinyDocument;
                     tinyxml2::XMLElement* tinyElement = tinyDocument.NewElement("stop");
 
-                    ASSERT_THROW(Stop stop(tinyElement), BaseException); // Not sure if this should throw Attribute or Element Exception
+                    ASSERT_THROW(Stop stop(tinyElement), BaseException);
+                }
+
+                TEST(parser_Stop, MultipleCodes)
+                {
+                    tinyxml2::XMLDocument tinyDocument;
+                    tinyxml2::XMLElement* tinyElement = tinyDocument.NewElement("stop");
+
+                    tinyxml2::XMLElement* tinyCode = tinyDocument.NewElement("code");
+                    tinyCode->SetText("// Code 1");
+                    tinyElement->InsertEndChild(tinyCode);
+
+                    tinyCode = tinyDocument.NewElement("code");
+                    tinyCode->SetText("// Code 2");
+                    tinyElement->InsertEndChild(tinyCode);
+
+                    ASSERT_THROW(Stop stop(tinyElement), ElementException);
                 }
 
                 TEST(parser_Stop, ExtraAttribute)
