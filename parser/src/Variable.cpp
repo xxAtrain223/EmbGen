@@ -1,6 +1,6 @@
 #include "EmbGen/Variable.hpp"
 #include <tinyxml2.h>
-#include "EmbGen/Exceptions.hpp"
+#include "EmbGen/ParserExceptions.hpp"
 
 namespace emb
 {

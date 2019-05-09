@@ -3,8 +3,6 @@
 
 #include "EmbGen/XmlElement.hpp"
 
-#include "EmbGen/Exceptions.hpp"
-
 namespace emb
 {
     namespace gen

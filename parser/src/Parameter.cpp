@@ -1,4 +1,5 @@
 #include "EmbGen/Parameter.hpp"
+#include "EmbGen/ParserExceptions.hpp"
 #include <tinyxml2.h>
 #include <string>
 

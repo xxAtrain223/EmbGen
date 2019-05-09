@@ -1,7 +1,7 @@
 #include <gtest/gtest.h>
 #include <tinyxml2.h>
 #include "EmbGen/Include.hpp"
-#include "EmbGen/Exceptions.hpp"
+#include "EmbGen/ParserExceptions.hpp"
 
 namespace emb
 {

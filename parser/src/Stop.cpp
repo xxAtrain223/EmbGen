@@ -1,5 +1,5 @@
 #include "EmbGen/Stop.hpp"
-#include "EmbGen/Exceptions.hpp"
+#include "EmbGen/ParserExceptions.hpp"
 #include <tinyxml2.h>
 
 namespace emb
@@ -37,11 +37,11 @@ namespace emb
 
                 if (m_command == "" && m_code == nullptr)
                 {
-                    throw BaseException("Neither command nor code are defined for Stop on line " + std::to_string(getLineNum()));
+                    throw ParserException("Neither command nor code are defined for Stop on line " + std::to_string(getLineNum()));
                 }
                 if (m_command != "" && m_code != nullptr)
                 {
-                    throw BaseException("Both command and code are defined for Stop on line " + std::to_string(getLineNum()));
+                    throw ParserException("Both command and code are defined for Stop on line " + std::to_string(getLineNum()));
                 }
 
                 if (!isAttributesEmpty())

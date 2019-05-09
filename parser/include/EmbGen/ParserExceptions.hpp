@@ -4,11 +4,11 @@
 #include <stdexcept>
 
 #define NEW_EMB_EX(name)                                         \
-    class name : public emb::gen::parser::BaseException          \
+    class name : public emb::gen::parser::ParserException          \
     {                                                            \
     public:                                                      \
         name(const std::string& message = "") :                  \
-            emb::gen::parser::BaseException(#name ": " + message) \
+            emb::gen::parser::ParserException(#name ": " + message) \
         {                                                        \
         }                                                        \
     };                                                           \
@@ -19,10 +19,10 @@ namespace emb
     {
         namespace parser
         {
-            class BaseException : public std::runtime_error
+            class ParserException : public std::runtime_error
             {
             public:
-                BaseException(const std::string& message) :
+                ParserException(const std::string& message) :
                     std::runtime_error(message)
                 {
                 }

@@ -1,7 +1,7 @@
 #include <gtest/gtest.h>
 #include <tinyxml2.h>
 #include "EmbGen/Stop.hpp"
-#include "EmbGen/Exceptions.hpp"
+#include "EmbGen/ParserExceptions.hpp"
 #include "EmbGen/Code.hpp"
 
 namespace emb
@@ -51,7 +51,7 @@ namespace emb
                     tinyElement->SetAttribute("command", "detach");
                     tinyElement->InsertEndChild(tinyCode);
 
-                    ASSERT_THROW(Stop stop(tinyElement), BaseException);
+                    ASSERT_THROW(Stop stop(tinyElement), ParserException);
                 }
 
                 TEST(parser_Stop, NoCommandOrCode)
@@ -59,7 +59,7 @@ namespace emb
                     tinyxml2::XMLDocument tinyDocument;
                     tinyxml2::XMLElement* tinyElement = tinyDocument.NewElement("stop");
 
-                    ASSERT_THROW(Stop stop(tinyElement), BaseException);
+                    ASSERT_THROW(Stop stop(tinyElement), ParserException);
                 }
 
                 TEST(parser_Stop, MultipleCodes)

@@ -1,5 +1,5 @@
 #include "EmbGen/Loop.hpp"
-#include "EmbGen/Exceptions.hpp"
+#include "EmbGen/ParserExceptions.hpp"
 
 namespace emb
 {
