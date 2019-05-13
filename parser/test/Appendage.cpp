@@ -93,7 +93,7 @@ namespace emb
                 {
                     tinyxml2::XMLDocument tinyDocument;
                     ASSERT_EQ(tinyDocument.Parse(
-                        "<appendage>\n"
+                        "<appendage name='Setup'>\n"
                         "    <setup>\n"
                         "        <code insert='each'>\n"
                         "            // Setup Code Each\n"
@@ -132,7 +132,7 @@ namespace emb
                 {
                     tinyxml2::XMLDocument tinyDocument;
                     ASSERT_EQ(tinyDocument.Parse(
-                        "<appendage>\n"
+                        "<appendage name='Loop'>\n"
                         "    <loop>\n"
                         "        <code insert='once'>\n"
                         "            // Loop Code Once\n"
@@ -173,7 +173,7 @@ namespace emb
                     ASSERT_EQ(tinyDocument.Parse(
                         "<appendage name='Command'>\n"
                         "    <command name='SetValue'>\n"
-                        "        <parameter type='int16_t' name='val'>\n"
+                        "        <parameter type='int16_t' name='val' />\n"
                         "        <code>\n"
                         "            value = val;\n"
                         "        </code>\n"
@@ -193,15 +193,15 @@ namespace emb
                     ASSERT_EQ(appendage.getSetup(), nullptr);
                     ASSERT_EQ(appendage.getLoop(), nullptr);
 
-                    std::map<std::string, Command> commands = appendage.getCommands();
+                    std::map<std::string, std::shared_ptr<Command>> commands = appendage.getCommands();
                     ASSERT_EQ(commands.size(), 1);
-                    Command SetValue = commands.at("SetValue");
-                    ASSERT_EQ(SetValue.getName(), "SetValue");
-                    std::vector<Parameter> parameters = SetValue.getParameters();
+                    std::shared_ptr<Command> SetValue = commands.at("SetValue");
+                    ASSERT_EQ(SetValue->getName(), "SetValue");
+                    std::vector<Parameter> parameters = SetValue->getParameters();
                     ASSERT_EQ(parameters.size(), 1);
                     ASSERT_EQ(parameters.at(0).getType(), "int16_t");
                     ASSERT_EQ(parameters.at(0).getName(), "val");
-                    ASSERT_EQ(SetValue.getCode()->getText(), "    value = val;");
+                    ASSERT_EQ(SetValue->getCode()->getText(), "    value = val;");
                 }
 
                 TEST(parser_Appendage, StopWithCode)
@@ -229,12 +229,12 @@ namespace emb
                     ASSERT_EQ(appendage.getSetup(), nullptr);
                     ASSERT_EQ(appendage.getLoop(), nullptr);
                     
-                    std::map<std::string, Command> commands = appendage.getCommands();
+                    std::map<std::string, std::shared_ptr<Command>> commands = appendage.getCommands();
                     ASSERT_EQ(commands.size(), 1);
-                    Command Stop = commands.at("Stop");
-                    ASSERT_EQ(Stop.getName(), "Stop");
-                    ASSERT_EQ(Stop.getParameters().size(), 0);
-                    std::shared_ptr<Code> code = Stop.getCode();
+                    std::shared_ptr<Command> Stop = commands.at("Stop");
+                    ASSERT_EQ(Stop->getName(), "Stop");
+                    ASSERT_EQ(Stop->getParameters().size(), 0);
+                    std::shared_ptr<Code> code = Stop->getCode();
                     ASSERT_EQ(code->getText(), "    servo.detach();");
                     ASSERT_EQ(code->getInsert(), Code::Insert::Each);
                 }
@@ -265,20 +265,20 @@ namespace emb
                     ASSERT_EQ(appendage.getSetup(), nullptr);
                     ASSERT_EQ(appendage.getLoop(), nullptr);
 
-                    std::map<std::string, Command> commands = appendage.getCommands();
+                    std::map<std::string, std::shared_ptr<Command>> commands = appendage.getCommands();
                     ASSERT_EQ(commands.size(), 2);
 
-                    Command Stop = commands.at("Detach");
-                    ASSERT_EQ(Stop.getName(), "Detach");
-                    ASSERT_EQ(Stop.getParameters().size(), 0);
-                    std::shared_ptr<Code> code = Stop.getCode();
+                    std::shared_ptr<Command> Stop = commands.at("Detach");
+                    ASSERT_EQ(Stop->getName(), "Detach");
+                    ASSERT_EQ(Stop->getParameters().size(), 0);
+                    std::shared_ptr<Code> code = Stop->getCode();
                     ASSERT_EQ(code->getText(), "    servo.detach();");
-                    ASSERT_EQ(code->getInsert(), Code::Insert::Once);
+                    ASSERT_EQ(code->getInsert(), Code::Insert::Each);
 
                     Stop = commands.at("Stop");
-                    ASSERT_EQ(Stop.getName(), "Stop");
-                    ASSERT_EQ(Stop.getParameters().size(), 0);
-                    code = Stop.getCode();
+                    ASSERT_EQ(Stop->getName(), "Stop");
+                    ASSERT_EQ(Stop->getParameters().size(), 0);
+                    code = Stop->getCode();
                     ASSERT_EQ(code->getText(), "    Detach(i);");
                     ASSERT_EQ(code->getInsert(), Code::Insert::Each);
                 }
@@ -309,11 +309,11 @@ namespace emb
                     ASSERT_THROW(Appendage appendage(tinyElement), AttributeException);
                 }
 
-                TEST(parser_Appendage, ExtraEelement)
+                TEST(parser_Appendage, ExtraElement)
                 {
                     tinyxml2::XMLDocument tinyDocument;
                     ASSERT_EQ(tinyDocument.Parse(
-                        "<appendage>\n"
+                        "<appendage name='ExtraElement'>\n"
                         "    <extra-element />\n"
                         "</appendage>\n"
                     ), tinyxml2::XMLError::XML_SUCCESS);

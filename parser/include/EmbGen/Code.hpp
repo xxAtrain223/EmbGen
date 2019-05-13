@@ -18,11 +18,11 @@ namespace emb
                     Once
                 };
 
-                Code(const tinyxml2::XMLElement* xml);
-
                 Insert getInsert() const;
-
                 std::string getText() const;
+
+                Code(const tinyxml2::XMLElement* xml);
+                Code(std::string text, Insert insert = Insert::Each);
 
             private:
                 std::string m_text;

@@ -44,6 +44,11 @@ namespace emb
                 }
             }
 
+            Command::Command(std::string name, std::vector<Parameter>&& parameters, std::shared_ptr<Code> code) :
+                m_name(name), m_parameters(parameters), m_code(code)
+            {
+            }
+
             std::string Command::getName() const
             {
                 return m_name;

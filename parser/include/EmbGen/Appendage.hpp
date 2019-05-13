@@ -20,7 +20,14 @@ namespace emb
         {
             class Appendage : public XmlElement
             {
-
+                std::string m_name;
+                std::string m_version;
+                std::string m_lib_deps;
+                std::vector<Include> m_includes;
+                std::vector<Variable> m_variables;
+                std::shared_ptr<Setup> m_setup;
+                std::shared_ptr<Loop> m_loop;
+                std::map<std::string, std::shared_ptr<Command>> m_commands;
 
             public:
                 Appendage(const tinyxml2::XMLElement* xml);
@@ -39,7 +46,7 @@ namespace emb
 
                 std::shared_ptr<Loop> getLoop() const;
 
-                std::map<std::string, Command> getCommands() const;
+                std::map<std::string, std::shared_ptr<Command>> getCommands() const;
             };
         }
     }

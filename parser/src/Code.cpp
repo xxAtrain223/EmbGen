@@ -55,6 +55,11 @@ namespace emb
                 }
             }
 
+            Code::Code(std::string text, Insert insert) :
+                m_text(text), m_insert(insert)
+            {
+            }
+
             Code::Insert Code::getInsert() const
             {
                 return m_insert;

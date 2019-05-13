@@ -23,6 +23,9 @@ namespace emb
                 std::map<std::string, const tinyxml2::XMLAttribute*> m_attributes;
                 std::multimap<std::string, const tinyxml2::XMLElement*> m_elements;
 
+            protected:
+                XmlElement();
+
             public:
                 XmlElement(const tinyxml2::XMLElement* xml);
 

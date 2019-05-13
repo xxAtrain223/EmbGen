@@ -10,6 +10,10 @@ namespace emb
     {
         namespace parser
         {
+            XmlElement::XmlElement()
+            {
+            }
+
             XmlElement::XmlElement(const tinyxml2::XMLElement* xml) :
                 m_tinyElement(xml)
             {

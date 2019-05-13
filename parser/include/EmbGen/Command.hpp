@@ -13,6 +13,8 @@ namespace emb
     {
         namespace parser
         {
+            class Appendage;
+
             class Command : public XmlElement
             {
                 std::string m_name;
@@ -21,6 +23,7 @@ namespace emb
 
             public:
                 Command(const tinyxml2::XMLElement* xml);
+                Command(std::string name, std::vector<Parameter>&& parameters, std::shared_ptr<Code> code);
 
                 std::string getName() const;
 
