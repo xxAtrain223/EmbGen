@@ -14,9 +14,11 @@ namespace emb
                 TEST(parser_Include, GetValue_DefaultStandard)
                 {
                     tinyxml2::XMLDocument tinyDocument;
-                    tinyxml2::XMLElement* tinyElement = tinyDocument.NewElement("include");
-
-                    tinyElement->SetText("test.h");
+                    ASSERT_EQ(tinyDocument.Parse(
+                        "<include>test.h</include>\n"
+                    ), tinyxml2::XMLError::XML_SUCCESS);
+                    tinyxml2::XMLElement* tinyElement = tinyDocument.FirstChildElement("include");
+                    ASSERT_NE(tinyElement, nullptr);
 
                     Include include(tinyElement);
 
@@ -27,10 +29,11 @@ namespace emb
                 TEST(parser_Include, GetValue_Standard)
                 {
                     tinyxml2::XMLDocument tinyDocument;
-                    tinyxml2::XMLElement* tinyElement = tinyDocument.NewElement("include");
-
-                    tinyElement->SetText("test.h");
-                    tinyElement->SetAttribute("standard", true);
+                    ASSERT_EQ(tinyDocument.Parse(
+                        "<include standard='true'>test.h</include>\n"
+                    ), tinyxml2::XMLError::XML_SUCCESS);
+                    tinyxml2::XMLElement* tinyElement = tinyDocument.FirstChildElement("include");
+                    ASSERT_NE(tinyElement, nullptr);
 
                     Include include(tinyElement);
 
@@ -41,10 +44,11 @@ namespace emb
                 TEST(parser_Include, GetValue_NonStandard)
                 {
                     tinyxml2::XMLDocument tinyDocument;
-                    tinyxml2::XMLElement* tinyElement = tinyDocument.NewElement("include");
-
-                    tinyElement->SetText("test.h");
-                    tinyElement->SetAttribute("standard", false);
+                    ASSERT_EQ(tinyDocument.Parse(
+                        "<include standard='false'>test.h</include>\n"
+                    ), tinyxml2::XMLError::XML_SUCCESS);
+                    tinyxml2::XMLElement* tinyElement = tinyDocument.FirstChildElement("include");
+                    ASSERT_NE(tinyElement, nullptr);
 
                     Include include(tinyElement);
 
@@ -55,10 +59,11 @@ namespace emb
                 TEST(parser_Include, ExtraAttribute)
                 {
                     tinyxml2::XMLDocument tinyDocument;
-                    tinyxml2::XMLElement* tinyElement = tinyDocument.NewElement("include");
-
-                    tinyElement->SetText("test.h");
-                    tinyElement->SetAttribute("extra", "attribute");
+                    ASSERT_EQ(tinyDocument.Parse(
+                        "<include extra='attribute'>test.h</include>\n"
+                    ), tinyxml2::XMLError::XML_SUCCESS);
+                    tinyxml2::XMLElement* tinyElement = tinyDocument.FirstChildElement("include");
+                    ASSERT_NE(tinyElement, nullptr);
 
                     ASSERT_THROW(Include include(tinyElement), AttributeException);
                 }
@@ -66,10 +71,13 @@ namespace emb
                 TEST(parser_Include, ChildElements)
                 {
                     tinyxml2::XMLDocument tinyDocument;
-                    tinyxml2::XMLElement* tinyElement = tinyDocument.NewElement("include");
-
-                    tinyElement->SetText("test.h");
-                    tinyElement->InsertEndChild(tinyDocument.NewElement("foo"));
+                    ASSERT_EQ(tinyDocument.Parse(
+                        "<include>\n"
+                        "    <extra-element />"
+                        "</include>\n"
+                    ), tinyxml2::XMLError::XML_SUCCESS);
+                    tinyxml2::XMLElement* tinyElement = tinyDocument.FirstChildElement("include");
+                    ASSERT_NE(tinyElement, nullptr);
 
                     ASSERT_THROW(Include include(tinyElement), ElementException);
                 }
