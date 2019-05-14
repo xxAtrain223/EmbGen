@@ -14,13 +14,15 @@ namespace emb
                 TEST(parser_Command, NoParameters)
                 {
                     tinyxml2::XMLDocument tinyDocument;
-                    tinyxml2::XMLElement* tinyElement = tinyDocument.NewElement("command");
-
-                    tinyElement->SetAttribute("name", "NoParam");
-
-                    tinyxml2::XMLElement* codeElement = tinyDocument.NewElement("code");
-                    codeElement->SetText("// Command Code");
-                    tinyElement->InsertEndChild(codeElement);
+                    ASSERT_EQ(tinyDocument.Parse(
+                        "<command name='NoParam'>\n"
+                        "    <code>\n"
+                        "        // Command Code\n"
+                        "    </code>\n"
+                        "</command>\n"
+                    ), tinyxml2::XMLError::XML_SUCCESS);
+                    tinyxml2::XMLElement* tinyElement = tinyDocument.FirstChildElement("command");
+                    ASSERT_NE(tinyElement, nullptr);
 
                     Command command(tinyElement);
                     std::vector<Parameter> parameters = command.getParameters();
@@ -35,18 +37,16 @@ namespace emb
                 TEST(parser_Command, OneParameter)
                 {
                     tinyxml2::XMLDocument tinyDocument;
-                    tinyxml2::XMLElement* tinyElement = tinyDocument.NewElement("command");
-
-                    tinyElement->SetAttribute("name", "OneParam");
-
-                    tinyxml2::XMLElement* tinyParameter = tinyDocument.NewElement("parameter");
-                    tinyParameter->SetAttribute("type", "uint8_t");
-                    tinyParameter->SetAttribute("name", "val");
-                    tinyElement->InsertEndChild(tinyParameter);
-
-                    tinyxml2::XMLElement* codeElement = tinyDocument.NewElement("code");
-                    codeElement->SetText("// Use val");
-                    tinyElement->InsertEndChild(codeElement);
+                    ASSERT_EQ(tinyDocument.Parse(
+                        "<command name='OneParam'>\n"
+                        "    <parameter type='uint8_t' name='val' />\n"
+                        "    <code>\n"
+                        "        // Use val\n"
+                        "    </code>\n"
+                        "</command>\n"
+                    ), tinyxml2::XMLError::XML_SUCCESS);
+                    tinyxml2::XMLElement* tinyElement = tinyDocument.FirstChildElement("command");
+                    ASSERT_NE(tinyElement, nullptr);
 
                     Command command(tinyElement);
                     std::vector<Parameter> parameters = command.getParameters();
@@ -63,24 +63,17 @@ namespace emb
                 TEST(parser_Command, TwoParameters)
                 {
                     tinyxml2::XMLDocument tinyDocument;
-                    tinyxml2::XMLElement* tinyElement = tinyDocument.NewElement("command");
-
-                    tinyElement->SetAttribute("name", "TwoParam");
-
-                    tinyxml2::XMLElement* tinyParameter = tinyDocument.NewElement("parameter");
-                    tinyParameter->SetAttribute("type", "int16_t");
-                    tinyParameter->SetAttribute("name", "int_val");
-                    tinyElement->InsertEndChild(tinyParameter);
-
-                    tinyParameter = tinyDocument.NewElement("parameter");
-                    tinyParameter->SetAttribute("type", "float");
-                    tinyParameter->SetAttribute("name", "float_val");
-                    tinyElement->InsertEndChild(tinyParameter);
-
-                    tinyxml2::XMLElement* codeElement = tinyDocument.NewElement("code");
-                    codeElement->SetText("// Do something with int_val and float_val");
-                    codeElement->SetAttribute("insert", "each");
-                    tinyElement->InsertEndChild(codeElement);
+                    ASSERT_EQ(tinyDocument.Parse(
+                        "<command name='TwoParam'>\n"
+                        "    <parameter type='int16_t' name='int_val' />\n"
+                        "    <parameter type='float' name='float_val' />\n"
+                        "    <code>\n"
+                        "        // Do something with int_val and float_val\n"
+                        "    </code>\n"
+                        "</command>\n"
+                    ), tinyxml2::XMLError::XML_SUCCESS);
+                    tinyxml2::XMLElement* tinyElement = tinyDocument.FirstChildElement("command");
+                    ASSERT_NE(tinyElement, nullptr);
 
                     Command command(tinyElement);
                     std::vector<Parameter> parameters = command.getParameters();
@@ -99,11 +92,15 @@ namespace emb
                 TEST(parser_Command, NoName)
                 {
                     tinyxml2::XMLDocument tinyDocument;
-                    tinyxml2::XMLElement* tinyElement = tinyDocument.NewElement("command");
-
-                    tinyxml2::XMLElement* codeElement = tinyDocument.NewElement("code");
-                    codeElement->SetText("// Command Code");
-                    tinyElement->InsertEndChild(codeElement);
+                    ASSERT_EQ(tinyDocument.Parse(
+                        "<command>\n"
+                        "    <code>\n"
+                        "        // Command code\n"
+                        "    </code>\n"
+                        "</command>\n"
+                    ), tinyxml2::XMLError::XML_SUCCESS);
+                    tinyxml2::XMLElement* tinyElement = tinyDocument.FirstChildElement("command");
+                    ASSERT_NE(tinyElement, nullptr);
 
                     ASSERT_THROW(Command command(tinyElement), AttributeException);
                 }
@@ -111,9 +108,12 @@ namespace emb
                 TEST(parser_Command, NoCode)
                 {
                     tinyxml2::XMLDocument tinyDocument;
-                    tinyxml2::XMLElement* tinyElement = tinyDocument.NewElement("command");
-
-                    tinyElement->SetAttribute("name", "NoCode");
+                    ASSERT_EQ(tinyDocument.Parse(
+                        "<command name='NoCode'>\n"
+                        "</command>\n"
+                    ), tinyxml2::XMLError::XML_SUCCESS);
+                    tinyxml2::XMLElement* tinyElement = tinyDocument.FirstChildElement("command");
+                    ASSERT_NE(tinyElement, nullptr);
 
                     ASSERT_THROW(Command command(tinyElement), ElementException);
                 }
@@ -121,14 +121,15 @@ namespace emb
                 TEST(parser_Command, ExtraAttribute)
                 {
                     tinyxml2::XMLDocument tinyDocument;
-                    tinyxml2::XMLElement* tinyElement = tinyDocument.NewElement("command");
-
-                    tinyElement->SetAttribute("name", "ExtraAttribute");
-                    tinyElement->SetAttribute("extra", "attribute");
-
-                    tinyxml2::XMLElement* codeElement = tinyDocument.NewElement("code");
-                    codeElement->SetText("// Extra Attribute");
-                    tinyElement->InsertEndChild(codeElement);
+                    ASSERT_EQ(tinyDocument.Parse(
+                        "<command name='ExtraAttribute' extra='attribute'>\n"
+                        "    <code>\n"
+                        "        // Extra Attribute\n"
+                        "    </code>\n"
+                        "</command>\n"
+                    ), tinyxml2::XMLError::XML_SUCCESS);
+                    tinyxml2::XMLElement* tinyElement = tinyDocument.FirstChildElement("command");
+                    ASSERT_NE(tinyElement, nullptr);
 
                     ASSERT_THROW(Command command(tinyElement), AttributeException);
                 }
@@ -136,15 +137,16 @@ namespace emb
                 TEST(parser_Command, ExtraElement)
                 {
                     tinyxml2::XMLDocument tinyDocument;
-                    tinyxml2::XMLElement* tinyElement = tinyDocument.NewElement("command");
-
-                    tinyElement->SetAttribute("name", "ExtraAttribute");
-
-                    tinyxml2::XMLElement* codeElement = tinyDocument.NewElement("code");
-                    codeElement->SetText("// Extra Attribute");
-                    tinyElement->InsertEndChild(codeElement);
-
-                    tinyElement->InsertEndChild(tinyDocument.NewElement("extra-element"));
+                    ASSERT_EQ(tinyDocument.Parse(
+                        "<command name='ExtraElement'>\n"
+                        "    <code>\n"
+                        "        // Extra Element\n"
+                        "    </code>\n"
+                        "    <extra-element />\n"
+                        "</command>\n"
+                    ), tinyxml2::XMLError::XML_SUCCESS);
+                    tinyxml2::XMLElement* tinyElement = tinyDocument.FirstChildElement("command");
+                    ASSERT_NE(tinyElement, nullptr);
 
                     ASSERT_THROW(Command command(tinyElement), ElementException);
                 }
