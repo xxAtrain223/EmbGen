@@ -14,10 +14,11 @@ namespace emb
                 TEST(parser_Parameter, CommandParameter)
                 {
                     tinyxml2::XMLDocument tinyDocument;
-                    tinyxml2::XMLElement* tinyElement = tinyDocument.NewElement("parameter");
-
-                    tinyElement->SetAttribute("type", "uint8_t");
-                    tinyElement->SetAttribute("name", "val");
+                    ASSERT_EQ(tinyDocument.Parse(
+                        "<parameter type='uint8_t' name='val' />\n"
+                    ), tinyxml2::XMLError::XML_SUCCESS);
+                    tinyxml2::XMLElement* tinyElement = tinyDocument.FirstChildElement("parameter");
+                    ASSERT_NE(tinyElement, nullptr);
 
                     Parameter parameter(tinyElement);
 
@@ -29,11 +30,11 @@ namespace emb
                 TEST(parser_Parameter, VariableParameter)
                 {
                     tinyxml2::XMLDocument tinyDocument;
-                    tinyxml2::XMLElement* tinyElement = tinyDocument.NewElement("parameter");
-
-                    tinyElement->SetAttribute("type", "int16_t");
-                    tinyElement->SetAttribute("name", "val");
-                    tinyElement->SetAttribute("core", true);
+                    ASSERT_EQ(tinyDocument.Parse(
+                        "<parameter type='int16_t' name='val' core='true' />\n"
+                    ), tinyxml2::XMLError::XML_SUCCESS);
+                    tinyxml2::XMLElement* tinyElement = tinyDocument.FirstChildElement("parameter");
+                    ASSERT_NE(tinyElement, nullptr);
 
                     Parameter parameter(tinyElement);
 
@@ -45,12 +46,11 @@ namespace emb
                 TEST(parser_Parameter, ParameterValidation)
                 {
                     tinyxml2::XMLDocument tinyDocument;
-                    tinyxml2::XMLElement* tinyElement = tinyDocument.NewElement("parameter");
-
-                    tinyElement->SetAttribute("type", "int16_t");
-                    tinyElement->SetAttribute("name", "val");
-                    tinyElement->SetAttribute("min", "-512");
-                    tinyElement->SetAttribute("max", "1024");
+                    ASSERT_EQ(tinyDocument.Parse(
+                        "<parameter type='int16_t' name='val' min='-512' max='1024' />\n"
+                    ), tinyxml2::XMLError::XML_SUCCESS);
+                    tinyxml2::XMLElement* tinyElement = tinyDocument.FirstChildElement("parameter");
+                    ASSERT_NE(tinyElement, nullptr);
 
                     Parameter parameter(tinyElement);
 
@@ -64,9 +64,11 @@ namespace emb
                 TEST(parser_Parameter, MissingType)
                 {
                     tinyxml2::XMLDocument tinyDocument;
-                    tinyxml2::XMLElement* tinyElement = tinyDocument.NewElement("parameter");
-
-                    tinyElement->SetAttribute("name", "bar");
+                    ASSERT_EQ(tinyDocument.Parse(
+                        "<parameter name='bar' />\n"
+                    ), tinyxml2::XMLError::XML_SUCCESS);
+                    tinyxml2::XMLElement* tinyElement = tinyDocument.FirstChildElement("parameter");
+                    ASSERT_NE(tinyElement, nullptr);
 
                     ASSERT_THROW(Parameter parameter(tinyElement), AttributeException);
                 }
@@ -74,9 +76,11 @@ namespace emb
                 TEST(parser_Parameter, MissingName)
                 {
                     tinyxml2::XMLDocument tinyDocument;
-                    tinyxml2::XMLElement* tinyElement = tinyDocument.NewElement("parameter");
-
-                    tinyElement->SetAttribute("type", "Foo");
+                    ASSERT_EQ(tinyDocument.Parse(
+                        "<parameter type='Foo' />\n"
+                    ), tinyxml2::XMLError::XML_SUCCESS);
+                    tinyxml2::XMLElement* tinyElement = tinyDocument.FirstChildElement("parameter");
+                    ASSERT_NE(tinyElement, nullptr);
 
                     ASSERT_THROW(Parameter parameter(tinyElement), AttributeException);
                 }
@@ -84,11 +88,11 @@ namespace emb
                 TEST(parser_Parameter, ExtraAttribute)
                 {
                     tinyxml2::XMLDocument tinyDocument;
-                    tinyxml2::XMLElement* tinyElement = tinyDocument.NewElement("parameter");
-
-                    tinyElement->SetAttribute("type", "uint8_t");
-                    tinyElement->SetAttribute("name", "val");
-                    tinyElement->SetAttribute("extra", "attribute");
+                    ASSERT_EQ(tinyDocument.Parse(
+                        "<parameter type='uint8_t' name='val' extra='attribute' />\n"
+                    ), tinyxml2::XMLError::XML_SUCCESS);
+                    tinyxml2::XMLElement* tinyElement = tinyDocument.FirstChildElement("parameter");
+                    ASSERT_NE(tinyElement, nullptr);
 
                     ASSERT_THROW(Parameter parameter(tinyElement), AttributeException);
                 }
@@ -96,12 +100,13 @@ namespace emb
                 TEST(parser_Parameter, ExtraElements)
                 {
                     tinyxml2::XMLDocument tinyDocument;
-                    tinyxml2::XMLElement* tinyElement = tinyDocument.NewElement("parameter");
-
-                    tinyElement->SetAttribute("type", "uint8_t");
-                    tinyElement->SetAttribute("name", "val");
-
-                    tinyElement->InsertEndChild(tinyDocument.NewElement("foo"));
+                    ASSERT_EQ(tinyDocument.Parse(
+                        "<parameter type='uint8_t' name='val'>\n"
+                        "    <foo />\n"
+                        "</parameter>\n"
+                    ), tinyxml2::XMLError::XML_SUCCESS);
+                    tinyxml2::XMLElement* tinyElement = tinyDocument.FirstChildElement("parameter");
+                    ASSERT_NE(tinyElement, nullptr);
 
                     ASSERT_THROW(Parameter parameter(tinyElement), ElementException);
                 }
