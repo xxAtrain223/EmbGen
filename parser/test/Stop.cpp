@@ -15,9 +15,11 @@ namespace emb
                 TEST(parser_Stop, Command)
                 {
                     tinyxml2::XMLDocument tinyDocument;
-                    tinyxml2::XMLElement* tinyElement = tinyDocument.NewElement("stop");
-
-                    tinyElement->SetAttribute("command", "detach");
+                    ASSERT_EQ(tinyDocument.Parse(
+                        "<stop command='detach' />\n"
+                    ), tinyxml2::XMLError::XML_SUCCESS);
+                    tinyxml2::XMLElement* tinyElement = tinyDocument.FirstChildElement("stop");
+                    ASSERT_NE(tinyElement, nullptr);
 
                     Stop stop(tinyElement);
 
@@ -28,11 +30,15 @@ namespace emb
                 TEST(parser_Stop, Code)
                 {
                     tinyxml2::XMLDocument tinyDocument;
-                    tinyxml2::XMLElement* tinyElement = tinyDocument.NewElement("stop");
-
-                    tinyxml2::XMLElement* tinyCode = tinyDocument.NewElement("code");
-                    tinyCode->SetText("// Code");
-                    tinyElement->InsertEndChild(tinyCode);
+                    ASSERT_EQ(tinyDocument.Parse(
+                        "<stop>\n"
+                        "    <code>\n"
+                        "        // Code\n"
+                        "    </code>\n"
+                        "</stop>\n"
+                    ), tinyxml2::XMLError::XML_SUCCESS);
+                    tinyxml2::XMLElement* tinyElement = tinyDocument.FirstChildElement("stop");
+                    ASSERT_NE(tinyElement, nullptr);
 
                     Stop stop(tinyElement);
 
@@ -43,13 +49,15 @@ namespace emb
                 TEST(parser_Stop, CommandAndCode)
                 {
                     tinyxml2::XMLDocument tinyDocument;
-                    tinyxml2::XMLElement* tinyElement = tinyDocument.NewElement("stop");
-
-                    tinyxml2::XMLElement* tinyCode = tinyDocument.NewElement("code");
-                    tinyCode->SetText("// Code");
-
-                    tinyElement->SetAttribute("command", "detach");
-                    tinyElement->InsertEndChild(tinyCode);
+                    ASSERT_EQ(tinyDocument.Parse(
+                        "<stop command='detach'>\n"
+                        "    <code>\n"
+                        "        // Code\n"
+                        "    </code>\n"
+                        "</stop>\n"
+                    ), tinyxml2::XMLError::XML_SUCCESS);
+                    tinyxml2::XMLElement* tinyElement = tinyDocument.FirstChildElement("stop");
+                    ASSERT_NE(tinyElement, nullptr);
 
                     ASSERT_THROW(Stop stop(tinyElement), ParserException);
                 }
@@ -57,7 +65,11 @@ namespace emb
                 TEST(parser_Stop, NoCommandOrCode)
                 {
                     tinyxml2::XMLDocument tinyDocument;
-                    tinyxml2::XMLElement* tinyElement = tinyDocument.NewElement("stop");
+                    ASSERT_EQ(tinyDocument.Parse(
+                        "<stop />\n"
+                    ), tinyxml2::XMLError::XML_SUCCESS);
+                    tinyxml2::XMLElement* tinyElement = tinyDocument.FirstChildElement("stop");
+                    ASSERT_NE(tinyElement, nullptr);
 
                     ASSERT_THROW(Stop stop(tinyElement), ParserException);
                 }
@@ -65,15 +77,18 @@ namespace emb
                 TEST(parser_Stop, MultipleCodes)
                 {
                     tinyxml2::XMLDocument tinyDocument;
-                    tinyxml2::XMLElement* tinyElement = tinyDocument.NewElement("stop");
-
-                    tinyxml2::XMLElement* tinyCode = tinyDocument.NewElement("code");
-                    tinyCode->SetText("// Code 1");
-                    tinyElement->InsertEndChild(tinyCode);
-
-                    tinyCode = tinyDocument.NewElement("code");
-                    tinyCode->SetText("// Code 2");
-                    tinyElement->InsertEndChild(tinyCode);
+                    ASSERT_EQ(tinyDocument.Parse(
+                        "<stop>\n"
+                        "    <code>\n"
+                        "        // Code 1\n"
+                        "    </code>\n"
+                        "    <code>\n"
+                        "        // Code 2\n"
+                        "    </code>\n"
+                        "</stop>\n"
+                    ), tinyxml2::XMLError::XML_SUCCESS);
+                    tinyxml2::XMLElement* tinyElement = tinyDocument.FirstChildElement("stop");
+                    ASSERT_NE(tinyElement, nullptr);
 
                     ASSERT_THROW(Stop stop(tinyElement), ElementException);
                 }
@@ -81,10 +96,11 @@ namespace emb
                 TEST(parser_Stop, ExtraAttribute)
                 {
                     tinyxml2::XMLDocument tinyDocument;
-                    tinyxml2::XMLElement* tinyElement = tinyDocument.NewElement("stop");
-
-                    tinyElement->SetAttribute("command", "detach");
-                    tinyElement->SetAttribute("extra", "attribute");
+                    ASSERT_EQ(tinyDocument.Parse(
+                        "<stop command='detach' extra='attribute' />\n"
+                    ), tinyxml2::XMLError::XML_SUCCESS);
+                    tinyxml2::XMLElement* tinyElement = tinyDocument.FirstChildElement("stop");
+                    ASSERT_NE(tinyElement, nullptr);
 
                     ASSERT_THROW(parser::Stop stop(tinyElement), AttributeException);
                 }
@@ -92,11 +108,13 @@ namespace emb
                 TEST(parser_Stop, ExtraElements)
                 {
                     tinyxml2::XMLDocument tinyDocument;
-                    tinyxml2::XMLElement* tinyElement = tinyDocument.NewElement("stop");
-
-                    tinyElement->SetAttribute("command", "detach");
-
-                    tinyElement->InsertEndChild(tinyDocument.NewElement("extra-element"));
+                    ASSERT_EQ(tinyDocument.Parse(
+                        "<stop command='detach'>\n"
+                        "    <extra-element />\n"
+                        "</stop>\n"
+                    ), tinyxml2::XMLError::XML_SUCCESS);
+                    tinyxml2::XMLElement* tinyElement = tinyDocument.FirstChildElement("stop");
+                    ASSERT_NE(tinyElement, nullptr);
 
                     ASSERT_THROW(parser::Stop stop(tinyElement), ElementException);
                 }
