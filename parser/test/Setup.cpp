@@ -14,11 +14,15 @@ namespace emb
                 TEST(parser_Setup, OneCode)
                 {
                     tinyxml2::XMLDocument tinyDocument;
-                    tinyxml2::XMLElement* tinyElement = tinyDocument.NewElement("setup");
-
-                    tinyxml2::XMLElement* tinyCode = tinyDocument.NewElement("code");
-                    tinyCode->SetText("// Code");
-                    tinyElement->InsertEndChild(tinyCode);
+                    ASSERT_EQ(tinyDocument.Parse(
+                        "<setup>\n"
+                        "    <code>\n"
+                        "        // Code\n"
+                        "    </code>\n"
+                        "</setup>\n"
+                    ), tinyxml2::XMLError::XML_SUCCESS);
+                    tinyxml2::XMLElement* tinyElement = tinyDocument.FirstChildElement("setup");
+                    ASSERT_NE(tinyElement, nullptr);
 
                     parser::Setup setup(tinyElement);
 
@@ -31,17 +35,18 @@ namespace emb
                 TEST(parser_Setup, TwoCodes)
                 {
                     tinyxml2::XMLDocument tinyDocument;
-                    tinyxml2::XMLElement* tinyElement = tinyDocument.NewElement("setup");
-
-                    tinyxml2::XMLElement* tinyCode = tinyDocument.NewElement("code");
-                    tinyCode->SetAttribute("insert", "once");
-                    tinyCode->SetText("// First Code");
-                    tinyElement->InsertEndChild(tinyCode);
-
-                    tinyCode = tinyDocument.NewElement("code");
-                    tinyCode->SetAttribute("insert", "each");
-                    tinyCode->SetText("// Second Code");
-                    tinyElement->InsertEndChild(tinyCode);
+                    ASSERT_EQ(tinyDocument.Parse(
+                        "<setup>\n"
+                        "    <code insert='once'>\n"
+                        "        // First Code\n"
+                        "    </code>\n"
+                        "    <code insert='each'>\n"
+                        "        // Second Code\n"
+                        "    </code>\n"
+                        "</setup>\n"
+                    ), tinyxml2::XMLError::XML_SUCCESS);
+                    tinyxml2::XMLElement* tinyElement = tinyDocument.FirstChildElement("setup");
+                    ASSERT_NE(tinyElement, nullptr);
 
                     parser::Setup setup(tinyElement);
 
@@ -56,7 +61,12 @@ namespace emb
                 TEST(parser_Setup, NoCode)
                 {
                     tinyxml2::XMLDocument tinyDocument;
-                    tinyxml2::XMLElement* tinyElement = tinyDocument.NewElement("setup");
+                    ASSERT_EQ(tinyDocument.Parse(
+                        "<setup>\n"
+                        "</setup>\n"
+                    ), tinyxml2::XMLError::XML_SUCCESS);
+                    tinyxml2::XMLElement* tinyElement = tinyDocument.FirstChildElement("setup");
+                    ASSERT_NE(tinyElement, nullptr);
 
                     ASSERT_THROW(parser::Setup setup(tinyElement), ElementException);
                 }
@@ -64,14 +74,15 @@ namespace emb
                 TEST(parser_Setup, ExtraAttribute)
                 {
                     tinyxml2::XMLDocument tinyDocument;
-                    tinyxml2::XMLElement* tinyElement = tinyDocument.NewElement("setup");
-
-                    tinyxml2::XMLElement* tinyCode = tinyDocument.NewElement("code");
-                    tinyCode->SetAttribute("insert", "once");
-                    tinyCode->SetText("// First Code");
-                    tinyElement->InsertEndChild(tinyCode);
-
-                    tinyElement->SetAttribute("extra", "attribute");
+                    ASSERT_EQ(tinyDocument.Parse(
+                        "<setup extra='attribute'>\n"
+                        "    <code insert='once'>\n"
+                        "        // First Code\n"
+                        "    </code>\n"
+                        "</setup>\n"
+                    ), tinyxml2::XMLError::XML_SUCCESS);
+                    tinyxml2::XMLElement* tinyElement = tinyDocument.FirstChildElement("setup");
+                    ASSERT_NE(tinyElement, nullptr);
 
                     ASSERT_THROW(parser::Setup setup(tinyElement), AttributeException);
                 }
@@ -79,14 +90,16 @@ namespace emb
                 TEST(parser_Setup, ExtraElements)
                 {
                     tinyxml2::XMLDocument tinyDocument;
-                    tinyxml2::XMLElement* tinyElement = tinyDocument.NewElement("setup");
-
-                    tinyxml2::XMLElement* tinyCode = tinyDocument.NewElement("code");
-                    tinyCode->SetAttribute("insert", "once");
-                    tinyCode->SetText("// First Code");
-                    tinyElement->InsertEndChild(tinyCode);
-
-                    tinyElement->InsertEndChild(tinyDocument.NewElement("extra-element"));
+                    ASSERT_EQ(tinyDocument.Parse(
+                        "<setup>\n"
+                        "    <code insert='once'>\n"
+                        "        // First Code\n"
+                        "    </code>\n"
+                        "    <extra-element />\n"
+                        "</setup>\n"
+                    ), tinyxml2::XMLError::XML_SUCCESS);
+                    tinyxml2::XMLElement* tinyElement = tinyDocument.FirstChildElement("setup");
+                    ASSERT_NE(tinyElement, nullptr);
 
                     ASSERT_THROW(parser::Setup setup(tinyElement), ElementException);
                 }
