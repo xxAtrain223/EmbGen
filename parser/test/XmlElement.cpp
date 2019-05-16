@@ -14,7 +14,11 @@ namespace emb
                 TEST(parser_XmlElement, GetName)
                 {
                     tinyxml2::XMLDocument tinyDocument;
-                    tinyxml2::XMLElement* tinyElement = tinyDocument.NewElement("foo");
+                    ASSERT_EQ(tinyDocument.Parse(
+                        "<foo />\n"
+                    ), tinyxml2::XMLError::XML_SUCCESS);
+                    tinyxml2::XMLElement* tinyElement = tinyDocument.FirstChildElement("foo");
+                    ASSERT_NE(tinyElement, nullptr);
 
                     XmlElement element(tinyElement);
 
@@ -24,9 +28,11 @@ namespace emb
                 TEST(parser_XmlElement, GetText)
                 {
                     tinyxml2::XMLDocument tinyDocument;
-                    tinyxml2::XMLElement* tinyElement = tinyDocument.NewElement("foo");
-
-                    tinyElement->SetText("bar");
+                    ASSERT_EQ(tinyDocument.Parse(
+                        "<foo>bar</foo>\n"
+                    ), tinyxml2::XMLError::XML_SUCCESS);
+                    tinyxml2::XMLElement* tinyElement = tinyDocument.FirstChildElement("foo");
+                    ASSERT_NE(tinyElement, nullptr);
 
                     XmlElement element(tinyElement);
 
@@ -36,22 +42,27 @@ namespace emb
                 TEST(parser_XmlElement, GetLineNum)
                 {
                     tinyxml2::XMLDocument tinyDocument;
-                    tinyxml2::XMLElement* tinyElement = tinyDocument.NewElement("foo");
-
-                    tinyElement->SetText("bar");
+                    ASSERT_EQ(tinyDocument.Parse(
+                        "<foo>\n"
+                        "    <bar />\n"
+                        "</foo>\n"
+                    ), tinyxml2::XMLError::XML_SUCCESS);
+                    tinyxml2::XMLElement* tinyElement = tinyDocument.FirstChildElement("foo")->FirstChildElement("bar");
+                    ASSERT_NE(tinyElement, nullptr);
 
                     XmlElement element(tinyElement);
 
-                    ASSERT_EQ(element.getLineNum(), 0);
+                    ASSERT_EQ(element.getLineNum(), 2);
                 }
 
                 TEST(parser_XmlElement, GetAttribute)
                 {
                     tinyxml2::XMLDocument tinyDocument;
-                    tinyxml2::XMLElement* tinyElement = tinyDocument.NewElement("foo");
-
-                    tinyElement->SetAttribute("bar", "bar");
-                    tinyElement->SetAttribute("baz", "baz");
+                    ASSERT_EQ(tinyDocument.Parse(
+                        "<foo bar='bar' baz='baz' />\n"
+                    ), tinyxml2::XMLError::XML_SUCCESS);
+                    tinyxml2::XMLElement* tinyElement = tinyDocument.FirstChildElement("foo");
+                    ASSERT_NE(tinyElement, nullptr);
 
                     XmlElement element(tinyElement);
 
@@ -65,9 +76,11 @@ namespace emb
                 TEST(parser_XmlElement, GetAttribute_AttributeException)
                 {
                     tinyxml2::XMLDocument tinyDocument;
-                    tinyxml2::XMLElement* tinyElement = tinyDocument.NewElement("foo");
-
-                    tinyElement->SetAttribute("bar", "bar");
+                    ASSERT_EQ(tinyDocument.Parse(
+                        "<foo bar='bar' />\n"
+                    ), tinyxml2::XMLError::XML_SUCCESS);
+                    tinyxml2::XMLElement* tinyElement = tinyDocument.FirstChildElement("foo");
+                    ASSERT_NE(tinyElement, nullptr);
 
                     XmlElement element(tinyElement);
 
@@ -82,11 +95,15 @@ namespace emb
                 TEST(parser_XmlElement, GetElements)
                 {
                     tinyxml2::XMLDocument tinyDocument;
-                    tinyxml2::XMLElement* tinyElement = tinyDocument.NewElement("foo");
-
-                    tinyElement->InsertEndChild(tinyDocument.NewElement("bar"));
-                    tinyElement->InsertEndChild(tinyDocument.NewElement("baz"));
-                    tinyElement->InsertEndChild(tinyDocument.NewElement("bar"));
+                    ASSERT_EQ(tinyDocument.Parse(
+                        "<foo>\n"
+                        "    <bar />\n"
+                        "    <baz />\n"
+                        "    <bar />\n"
+                        "</foo>\n"
+                    ), tinyxml2::XMLError::XML_SUCCESS);
+                    tinyxml2::XMLElement* tinyElement = tinyDocument.FirstChildElement("foo");
+                    ASSERT_NE(tinyElement, nullptr);
 
                     XmlElement element(tinyElement);
 
@@ -102,7 +119,11 @@ namespace emb
                 TEST(parser_XmlElement, GetText_ElementException)
                 {
                     tinyxml2::XMLDocument tinyDocument;
-                    tinyxml2::XMLElement* tinyElement = tinyDocument.NewElement("foo");
+                    ASSERT_EQ(tinyDocument.Parse(
+                        "<foo />\n"
+                    ), tinyxml2::XMLError::XML_SUCCESS);
+                    tinyxml2::XMLElement* tinyElement = tinyDocument.FirstChildElement("foo");
+                    ASSERT_NE(tinyElement, nullptr);
 
                     XmlElement element(tinyElement);
 
