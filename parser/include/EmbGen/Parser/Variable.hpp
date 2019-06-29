@@ -1,8 +1,8 @@
 #ifndef EMBGEN_PARSER_VARIABLE_HPP
 #define EMBGEN_PARSER_VARIABLE_HPP
 
-#include "EmbGen/XmlElement.hpp"
-#include "EmbGen/Parameter.hpp"
+#include "EmbGen/Parser/XmlElement.hpp"
+#include "EmbGen/Parser/Parameter.hpp"
 
 #include <vector>
 

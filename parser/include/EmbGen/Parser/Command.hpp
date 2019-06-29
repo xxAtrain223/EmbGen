@@ -1,11 +1,11 @@
 #ifndef EMBGEN_PARSER_COMMAND_HPP
 #define EMBGEN_PARSER_COMMAND_HPP
 
-#include "EmbGen/XmlElement.hpp"
+#include "EmbGen/Parser/XmlElement.hpp"
 #include <vector>
 #include <memory>
-#include "EmbGen/Parameter.hpp"
-#include "EmbGen/Code.hpp"
+#include "EmbGen/Parser/Parameter.hpp"
+#include "EmbGen/Parser/Code.hpp"
 
 namespace emb
 {

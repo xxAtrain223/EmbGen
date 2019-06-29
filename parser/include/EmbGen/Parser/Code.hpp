@@ -1,7 +1,7 @@
 #ifndef EMBGEN_PARSER_CODE_HPP
 #define EMBGEN_PARSER_CODE_HPP
 
-#include "EmbGen/XmlElement.hpp"
+#include "EmbGen/Parser/XmlElement.hpp"
 
 namespace emb
 {

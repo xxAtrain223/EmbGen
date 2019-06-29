@@ -1,5 +1,5 @@
-#include "EmbGen/Stop.hpp"
-#include "EmbGen/ParserExceptions.hpp"
+#include "EmbGen/Parser/Stop.hpp"
+#include "EmbGen/Parser/Exceptions.hpp"
 #include <tinyxml2.h>
 
 namespace emb

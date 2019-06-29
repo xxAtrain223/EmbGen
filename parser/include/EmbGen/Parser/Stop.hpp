@@ -1,8 +1,8 @@
 #ifndef EMBGEN_PARSER_STOP_HPP
 #define EMBGEN_PARSER_STOP_HPP
 
-#include "EmbGen/XmlElement.hpp"
-#include "EmbGen/Code.hpp"
+#include "EmbGen/Parser/XmlElement.hpp"
+#include "EmbGen/Parser/Code.hpp"
 #include <memory>
 
 namespace emb

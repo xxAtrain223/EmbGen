@@ -1,7 +1,7 @@
-#include "EmbGen/XmlElement.hpp"
+#include "EmbGen/Parser/XmlElement.hpp"
 
 #include <tinyxml2.h>
-#include "EmbGen/ParserExceptions.hpp"
+#include "EmbGen/Parser/Exceptions.hpp"
 #include <string>
 
 namespace emb

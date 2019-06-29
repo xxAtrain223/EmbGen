@@ -1,9 +1,9 @@
 #ifndef EMBGEN_PARSER_LOOP_HPP
 #define EMBGEN_PARSER_LOOP_HPP
 
-#include "EmbGen/XmlElement.hpp"
+#include "EmbGen/Parser/XmlElement.hpp"
 #include <vector>
-#include "EmbGen/Code.hpp"
+#include "EmbGen/Parser/Code.hpp"
 
 namespace emb
 {

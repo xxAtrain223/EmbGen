@@ -1,12 +1,12 @@
 #ifndef EMBGEN_PARSER_APPENDAGE_HPP
 #define EMBGEN_PARSER_APPENDAGE_HPP
 
-#include "EmbGen/XmlElement.hpp"
-#include "EmbGen/Command.hpp"
-#include "EmbGen/Include.hpp"
-#include "EmbGen/Loop.hpp"
-#include "EmbGen/Setup.hpp"
-#include "EmbGen/Variable.hpp"
+#include "EmbGen/Parser/XmlElement.hpp"
+#include "EmbGen/Parser/Command.hpp"
+#include "EmbGen/Parser/Include.hpp"
+#include "EmbGen/Parser/Loop.hpp"
+#include "EmbGen/Parser/Setup.hpp"
+#include "EmbGen/Parser/Variable.hpp"
 
 #include <vector>
 #include <map>
