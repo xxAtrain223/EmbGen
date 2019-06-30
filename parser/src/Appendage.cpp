@@ -83,13 +83,14 @@ namespace emb
                     std::shared_ptr<Code> code = stop->getCode();
                     if (code != nullptr)
                     {
-                        m_commands.emplace("Stop", std::make_shared<Command>("Stop", std::vector<Parameter>(), code));
+                        m_commands.emplace("Stop", std::make_shared<Command>("Stop", std::vector<Parameter>(), std::vector<ReturnValue>(), code));
                     }
                     else if (m_commands.find(stop->getCommand()) != std::end(m_commands))
                     {
                         m_commands.emplace("Stop",
                             std::make_shared<Command>("Stop",
                                 std::vector<Parameter>(),
+                                std::vector<ReturnValue>(),
                                 std::make_shared<Code>("    " + stop->getCommand() + "(i);")));
                     }
                     else

@@ -18,6 +18,11 @@ namespace emb
                     m_parameters.emplace_back(parameter);
                 }
 
+                for (auto returnValue : getElements("return_value"))
+                {
+                    m_returnValues.emplace_back(returnValue);
+                }
+
                 std::vector<const tinyxml2::XMLElement*> code = getElements("code");
 
                 if (code.size() == 1)
@@ -44,8 +49,8 @@ namespace emb
                 }
             }
 
-            Command::Command(std::string name, std::vector<Parameter>&& parameters, std::shared_ptr<Code> code) :
-                m_name(name), m_parameters(parameters), m_code(code)
+            Command::Command(std::string name, std::vector<Parameter>&& parameters, std::vector<ReturnValue>&& returnValues, std::shared_ptr<Code> code) :
+                m_name(name), m_parameters(parameters), m_returnValues(returnValues), m_code(code)
             {
             }
 
@@ -57,6 +62,11 @@ namespace emb
             std::vector<Parameter> Command::getParameters() const
             {
                 return m_parameters;
+            }
+
+            std::vector<ReturnValue> Command::getReturnValues() const
+            {
+                return m_returnValues;
             }
             
             std::shared_ptr<Code> Command::getCode() const

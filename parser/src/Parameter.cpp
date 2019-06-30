@@ -44,12 +44,12 @@ namespace emb
 
                 if (!isAttributesEmpty())
                 {
-                    throw AttributeException("Extra attributes for Include on line " + std::to_string(getLineNum()));
+                    throw AttributeException("Extra attributes for Parameter on line " + std::to_string(getLineNum()));
                 }
 
                 if (!isElementsEmpty())
                 {
-                    throw ElementException("Extra elements for Include on line " + std::to_string(getLineNum()));
+                    throw ElementException("Extra elements for Parameter on line " + std::to_string(getLineNum()));
                 }
             }
 
