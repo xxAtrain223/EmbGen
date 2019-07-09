@@ -19,7 +19,7 @@ namespace emb
                 };
 
                 Insert getInsert() const;
-                std::string getText() const;
+                virtual std::string getText() const override;
 
                 Code(const tinyxml2::XMLElement* xml);
                 Code(std::string text, Insert insert = Insert::Each);

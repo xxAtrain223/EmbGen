@@ -5,6 +5,7 @@ option(EMB_ENABLE_TESTING "Enable Testing for EmbGen" ON)
 
 add_subdirectory(ext)
 add_subdirectory(parser)
+add_subdirectory(gen)
 
 if (EMB_ENABLE_TESTING)
     enable_testing()

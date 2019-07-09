@@ -4,10 +4,20 @@ set -e
 pushd build
 make -j2
 
-cd parser
+pushd parser
 ./EmbGenParserTest
+popd
+
+pushd gen
+./EmbGenTest
+popd
 
 popd
 
-cd parser
+pushd parser
+cppcheck src/*.cpp include/Parser/EmbGen/*.hpp
+popd
+
+pushd gen
 cppcheck src/*.cpp include/EmbGen/*.hpp
+popd

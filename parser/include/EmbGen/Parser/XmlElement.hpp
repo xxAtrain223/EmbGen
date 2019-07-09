@@ -31,7 +31,7 @@ namespace emb
 
                 std::string getName() const;
 
-                std::string getText() const;
+                virtual std::string getText() const;
 
                 int getLineNum() const;
 

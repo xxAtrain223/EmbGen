@@ -229,14 +229,10 @@ namespace emb
                     ASSERT_EQ(appendage.getSetup(), nullptr);
                     ASSERT_EQ(appendage.getLoop(), nullptr);
                     
-                    std::map<std::string, std::shared_ptr<Command>> commands = appendage.getCommands();
-                    ASSERT_EQ(commands.size(), 1);
-                    std::shared_ptr<Command> Stop = commands.at("Stop");
-                    ASSERT_EQ(Stop->getName(), "Stop");
-                    ASSERT_EQ(Stop->getParameters().size(), 0);
-                    std::shared_ptr<Code> code = Stop->getCode();
-                    ASSERT_EQ(code->getText(), "    servo.detach();");
-                    ASSERT_EQ(code->getInsert(), Code::Insert::Each);
+                    std::shared_ptr<Stop> stop = appendage.getStop();
+                    ASSERT_NE(stop, nullptr);
+                    ASSERT_EQ(stop->getCode()->getText(), "    servo.detach();");
+                    ASSERT_EQ(stop->getCommand(), "");
                 }
 
                 TEST(parser_Appendage, StopCommandName)
@@ -265,22 +261,10 @@ namespace emb
                     ASSERT_EQ(appendage.getSetup(), nullptr);
                     ASSERT_EQ(appendage.getLoop(), nullptr);
 
-                    std::map<std::string, std::shared_ptr<Command>> commands = appendage.getCommands();
-                    ASSERT_EQ(commands.size(), 2);
-
-                    std::shared_ptr<Command> Stop = commands.at("Detach");
-                    ASSERT_EQ(Stop->getName(), "Detach");
-                    ASSERT_EQ(Stop->getParameters().size(), 0);
-                    std::shared_ptr<Code> code = Stop->getCode();
-                    ASSERT_EQ(code->getText(), "    servo.detach();");
-                    ASSERT_EQ(code->getInsert(), Code::Insert::Each);
-
-                    Stop = commands.at("Stop");
-                    ASSERT_EQ(Stop->getName(), "Stop");
-                    ASSERT_EQ(Stop->getParameters().size(), 0);
-                    code = Stop->getCode();
-                    ASSERT_EQ(code->getText(), "    Detach(i);");
-                    ASSERT_EQ(code->getInsert(), Code::Insert::Each);
+                    std::shared_ptr<Stop> stop = appendage.getStop();
+                    ASSERT_NE(stop, nullptr);
+                    ASSERT_EQ(stop->getCode(), nullptr);
+                    ASSERT_EQ(stop->getCommand(), "Detach");
                 }
 
                 TEST(parser_Appendage, NoName)

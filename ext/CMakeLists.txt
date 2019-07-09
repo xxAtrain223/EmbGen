@@ -8,3 +8,6 @@ if (EMB_ENABLE_TESTING)
     set(gtest_force_shared_crt TRUE CACHE BOOL "")
     add_subdirectory(googletest)
 endif()
+
+add_library(nlohmann_json INTERFACE)
+target_include_directories(nlohmann_json INTERFACE json/include)

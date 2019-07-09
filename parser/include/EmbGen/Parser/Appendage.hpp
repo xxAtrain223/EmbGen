@@ -7,6 +7,7 @@
 #include "EmbGen/Parser/Loop.hpp"
 #include "EmbGen/Parser/Setup.hpp"
 #include "EmbGen/Parser/Variable.hpp"
+#include "EmbGen/Parser/Stop.hpp"
 
 #include <vector>
 #include <map>
@@ -28,6 +29,7 @@ namespace emb
                 std::shared_ptr<Setup> m_setup;
                 std::shared_ptr<Loop> m_loop;
                 std::map<std::string, std::shared_ptr<Command>> m_commands;
+                std::shared_ptr<Stop> m_stop;
 
             public:
                 Appendage(const tinyxml2::XMLElement* xml);
@@ -47,6 +49,8 @@ namespace emb
                 std::shared_ptr<Loop> getLoop() const;
 
                 std::map<std::string, std::shared_ptr<Command>> getCommands() const;
+
+                std::shared_ptr<Stop> getStop() const;
             };
         }
     }

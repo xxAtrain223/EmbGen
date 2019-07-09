@@ -4,3 +4,6 @@
 [submodule "ext/tinyxml2"]
 	path = ext/tinyxml2
 	url = https://github.com/leethomason/tinyxml2.git
+[submodule "ext/json"]
+	path = ext/json
+	url = https://github.com/nlohmann/json.git

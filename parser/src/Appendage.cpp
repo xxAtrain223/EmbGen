@@ -79,28 +79,15 @@ namespace emb
                 auto stops = getElements("stop");
                 if (stops.size() == 1)
                 {
-                    std::shared_ptr<Stop> stop = std::make_shared<Stop>(stops.at(0));
-                    std::shared_ptr<Code> code = stop->getCode();
-                    if (code != nullptr)
-                    {
-                        m_commands.emplace("Stop", std::make_shared<Command>("Stop", std::vector<Parameter>(), std::vector<ReturnValue>(), code));
-                    }
-                    else if (m_commands.find(stop->getCommand()) != std::end(m_commands))
-                    {
-                        m_commands.emplace("Stop",
-                            std::make_shared<Command>("Stop",
-                                std::vector<Parameter>(),
-                                std::vector<ReturnValue>(),
-                                std::make_shared<Code>("    " + stop->getCommand() + "(i);")));
-                    }
-                    else
-                    {
-                        throw AttributeException("Stop element command name '" + stop->getCommand() + "' not found in Appendage '" + m_name + "'");
-                    }
+                    m_stop = std::make_shared<Stop>(stops.at(0));
                 }
                 else if (stops.size() > 1)
                 {
                     throw ElementException("Too many Stop elements for Appendage '" + m_name + "' on line " + std::to_string(getLineNum()));
+                }
+                else
+                {
+                    m_stop = nullptr;
                 }
 
                 if (!isAttributesEmpty())
@@ -152,6 +139,11 @@ namespace emb
             std::map<std::string, std::shared_ptr<Command>> Appendage::getCommands() const
             {
                 return m_commands;
+            }
+
+            std::shared_ptr<Stop> Appendage::getStop() const
+            {
+                return m_stop;
             }
         }
     }
