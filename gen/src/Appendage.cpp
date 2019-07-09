@@ -390,8 +390,7 @@ namespace emb
 
         bool Appendage::hasStop() const
         {
-            auto commands = m_xml->getCommands();
-            return commands.find("Stop") != commands.end();
+            return m_xml->getStop() != nullptr;
         }
     }
 }
