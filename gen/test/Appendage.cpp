@@ -344,7 +344,7 @@ namespace emb
 
                 ASSERT_THAT(
                     appendage.getCommandNames(),
-                    ElementsAre("Servo_detach", "Servo_set", "Servo_Stop"));
+                    ElementsAre("Servo_detach_adaptor", "Servo_set_adaptor", "Servo_Stop"));
             }
 
             TEST(parser_Appendage, CommandFunctions)

@@ -220,7 +220,7 @@ namespace emb
             std::vector<std::string> commandNames;
             for (std::string& key : getMapKeys(m_xml->getCommands()))
             {
-                commandNames.emplace_back(m_xml->getName() + "_" + key);
+                commandNames.emplace_back(m_xml->getName() + "_" + key + "_adaptor");
             }
 
             if (m_xml->getStop() != nullptr)

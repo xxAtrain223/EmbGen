@@ -24,9 +24,11 @@ namespace emb
             std::string replaceVariables(std::string block, std::string append = "") const;
 
             std::string getAdaptorCode(std::shared_ptr<parser::Command> command) const;
+
             std::string getAdaptorFunction(std::shared_ptr<parser::Command> command) const;
 
             std::string getCommandCode(std::shared_ptr<parser::Command> command) const;
+
             std::string getCommandFunction(std::shared_ptr<parser::Command> command) const;
 
             std::string getStopFunction(std::shared_ptr<parser::Stop> stop) const;
@@ -41,7 +43,7 @@ namespace emb
             std::string getSetup() const;
 
             std::string getLoop() const;
-            
+
             std::vector<std::string> getCommandNames() const;
 
             std::string getCommandFunctions() const;
