@@ -14,6 +14,11 @@ namespace emb
         {
         }
 
+        std::string Appendage::getName() const
+        {
+            return m_xml->getName();
+        }
+
         std::string Appendage::getIncludes() const
         {
             std::string rv = "";
@@ -171,12 +176,17 @@ namespace emb
 
             const std::shared_ptr<parser::Setup> setup = m_xml->getSetup();
 
+            if (setup == nullptr)
+            {
+                return rv;
+            }
+
             for (const parser::Code& code : setup->getCode())
             {
                 if (code.getInsert() == parser::Code::Insert::Each)
                 {
                     std::string block = "";
-                    block += "for (uint16_t i = 0; i < " + std::to_string(m_json.size()) + "u; ++i) {\n";
+                    block += "for (uint16_t i = 0; i <= " + std::to_string(m_json.size() - 1) + "u; ++i) {\n";
                     block += replaceVariables(code.getText(), "[i]");
                     block += "\n}\n";
                     rv += indent(block);
@@ -195,6 +205,11 @@ namespace emb
             std::string rv = "";
 
             const std::shared_ptr<parser::Loop> loop = m_xml->getLoop();
+            
+            if (loop == nullptr)
+            {
+                return rv;
+            }
 
             for (const parser::Code& code : loop->getCode())
             {
@@ -225,13 +240,13 @@ namespace emb
 
             if (m_xml->getStop() != nullptr)
             {
-                commandNames.emplace_back(m_xml->getName() + "_Stop");
+                commandNames.emplace_back(m_xml->getName() + "_stop");
             }
 
             return commandNames;
         }
 
-        std::string Appendage::getAdaptorCode(std::shared_ptr<parser::Command> command) const
+        std::string Appendage::getAdaptorCode(std::string messengerName, std::shared_ptr<parser::Command> command) const
         {
             std::string rv = "";
             std::vector<parser::Parameter> parameters = command->getParameters();
@@ -249,7 +264,7 @@ namespace emb
                 rv += returnValue.getType() + " " + returnValue.getName() + ";\n";
             }
 
-            rv += "messenger.read(\n";
+            rv += messengerName + ".read(\n";
             rv += "    i, [](uint16_t i){ return i <= " + std::to_string(m_json.size() - 1) + "u; },\n";
             for (const parser::Parameter& parameter : parameters)
             {
@@ -295,7 +310,7 @@ namespace emb
 
             if (!returnValues.empty())
             {
-                rv += "messenger.write(\n";
+                rv += messengerName + ".write(\n";
                 for (const parser::ReturnValue& returnValue : returnValues)
                 {
                     rv += "    " + returnValue.getName() + ",\n";
@@ -307,12 +322,12 @@ namespace emb
             return indent(rv);
         }
 
-        std::string Appendage::getAdaptorFunction(std::shared_ptr<parser::Command> command) const
+        std::string Appendage::getAdaptorFunction(std::string messengerName, std::shared_ptr<parser::Command> command) const
         {
             std::string rv = "";
 
             rv += "void " + m_xml->getName() + "_" + command->getName() + "_adaptor()\n{\n";
-            rv += getAdaptorCode(command);
+            rv += getAdaptorCode(messengerName, command);
             rv += "}\n";
 
             return rv;
@@ -353,7 +368,7 @@ namespace emb
 
             if (stop != nullptr)
             {
-                rv += "void " + m_xml->getName() + "_Stop()\n{\n";
+                rv += "void " + m_xml->getName() + "_stop()\n{\n";
                 std::string block = "";
                 std::shared_ptr<parser::Code> code = stop->getCode();
                 block += "for (uint16_t i = 0; i <= " + std::to_string(m_json.size() - 1) + "u; ++i)\n{\n";
@@ -373,13 +388,13 @@ namespace emb
             return rv;
         }
 
-        std::string Appendage::getCommandFunctions() const
+        std::string Appendage::getCommandFunctions(std::string messengerName) const
         {
             std::string rv = "";
 
             for (auto command : m_xml->getCommands())
             {
-                rv += getAdaptorFunction(command.second) + "\n";
+                rv += getAdaptorFunction(messengerName, command.second) + "\n";
                 rv += getCommandFunction(command.second) + "\n";
             }
 

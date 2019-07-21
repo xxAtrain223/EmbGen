@@ -25,6 +25,9 @@ namespace emb
             {
             }
         };
+
+        NEW_EMB_EX(XmlParseException);
+        NEW_EMB_EX(InoTemplateException);
     }
 }
 

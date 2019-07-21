@@ -13,7 +13,7 @@ namespace emb
     {
         namespace test
         {
-            TEST(parser_Appendage, Includes)
+            TEST(embgen_Appendage, Includes)
             {
                 tinyxml2::XMLDocument tinyDocument;
                 ASSERT_EQ(tinyDocument.Parse(
@@ -58,7 +58,7 @@ namespace emb
             }
 
 
-            TEST(parser_Appendage, Variables)
+            TEST(embgen_Appendage, Variables)
             {
                 tinyxml2::XMLDocument tinyDocument;
                 ASSERT_EQ(tinyDocument.Parse(
@@ -140,7 +140,7 @@ namespace emb
                 );
             }
 
-            TEST(parser_Appendage, Setup)
+            TEST(embgen_Appendage, Setup)
             {
                 tinyxml2::XMLDocument tinyDocument;
                 ASSERT_EQ(tinyDocument.Parse(
@@ -208,7 +208,7 @@ namespace emb
                 );
             }
 
-            TEST(parser_Appendage, Loop)
+            TEST(embgen_Appendage, Loop)
             {
                 tinyxml2::XMLDocument tinyDocument;
                 ASSERT_EQ(tinyDocument.Parse(
@@ -272,7 +272,7 @@ namespace emb
                 );
             }
 
-            TEST(parser_Appendage, CommandNames)
+            TEST(embgen_Appendage, CommandNames)
             {
                 tinyxml2::XMLDocument tinyDocument;
                 ASSERT_EQ(tinyDocument.Parse(
@@ -347,7 +347,7 @@ namespace emb
                     ElementsAre("Servo_detach_adaptor", "Servo_set_adaptor", "Servo_Stop"));
             }
 
-            TEST(parser_Appendage, CommandFunctions)
+            TEST(embgen_Appendage, CommandFunctions)
             {
                 tinyxml2::XMLDocument tinyDocument;
                 ASSERT_EQ(tinyDocument.Parse(
@@ -424,7 +424,7 @@ namespace emb
                 Appendage appendage(xml, json);
 
                 ASSERT_EQ(
-                    appendage.getCommandFunctions(),
+                    appendage.getCommandFunctions("messenger"),
                     "void Servo_detach_adaptor()\n"
                     "{\n"
                     "    uint16_t i;\n"
@@ -484,7 +484,7 @@ namespace emb
                     "    Servo_servo[i].write(value);\n"
                     "}\n"
                     "\n"
-                    "void Servo_Stop()\n"
+                    "void Servo_stop()\n"
                     "{\n"
                     "    for (uint16_t i = 0; i <= 1u; ++i)\n"
                     "    {\n"
@@ -494,7 +494,7 @@ namespace emb
                     "\n");
             }
 
-            TEST(parser_Appendage, StopCode)
+            TEST(embgen_Appendage, StopCode)
             {
                 tinyxml2::XMLDocument tinyDocument;
                 ASSERT_EQ(tinyDocument.Parse(
@@ -540,8 +540,8 @@ namespace emb
                 Appendage appendage(xml, json);
 
                 ASSERT_EQ(
-                    appendage.getCommandFunctions(),
-                    "void Servo_Stop()\n"
+                    appendage.getCommandFunctions("messenger"),
+                    "void Servo_stop()\n"
                     "{\n"
                     "    for (uint16_t i = 0; i <= 1u; ++i)\n"
                     "    {\n"

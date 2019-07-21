@@ -3,6 +3,8 @@ project(EmbGen)
 
 option(EMB_ENABLE_TESTING "Enable Testing for EmbGen" ON)
 
+LIST(APPEND CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/CMakeModules)
+
 add_subdirectory(ext)
 add_subdirectory(parser)
 add_subdirectory(gen)

@@ -23,9 +23,9 @@ namespace emb
 
             std::string replaceVariables(std::string block, std::string append = "") const;
 
-            std::string getAdaptorCode(std::shared_ptr<parser::Command> command) const;
+            std::string getAdaptorCode(std::string messengerName, std::shared_ptr<parser::Command> command) const;
 
-            std::string getAdaptorFunction(std::shared_ptr<parser::Command> command) const;
+            std::string getAdaptorFunction(std::string messengerName, std::shared_ptr<parser::Command> command) const;
 
             std::string getCommandCode(std::shared_ptr<parser::Command> command) const;
 
@@ -35,6 +35,8 @@ namespace emb
 
         public:
             Appendage(std::shared_ptr<parser::Appendage> xml, const nlohmann::json& json);
+
+            std::string getName() const;
 
             std::string getIncludes() const;
 
@@ -46,7 +48,7 @@ namespace emb
 
             std::vector<std::string> getCommandNames() const;
 
-            std::string getCommandFunctions() const;
+            std::string getCommandFunctions(std::string messengerName) const;
 
             bool hasStop() const;
         };

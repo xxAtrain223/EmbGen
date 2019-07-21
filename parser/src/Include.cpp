@@ -20,6 +20,8 @@ namespace emb
                     m_standard = false;
                 }
 
+                m_value = getText();
+
                 if (!isAttributesEmpty())
                 {
                     throw AttributeException("Extra attributes for Include on line " + std::to_string(getLineNum()));
@@ -33,7 +35,7 @@ namespace emb
 
             std::string Include::getValue() const
             {
-                return getText();
+                return m_value;
             }
 
             bool Include::isStandard() const
