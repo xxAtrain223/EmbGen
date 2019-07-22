@@ -35,10 +35,5 @@
             servo.detach();
         </code>
     </command>
-    <!--<stop command='detach' />-->
-    <stop>
-        <code>
-            servo.detach();
-        </code>
-    </stop>
+    <stop command='detach' />
 </appendage>

@@ -119,8 +119,6 @@ namespace emb
 
             rv += indent + match.str(1) + messengerName + ".registerCommand(" + std::to_string(count++) + "u, all_stop)" + match.str(2);
 
-            //rv = rv.substr(0, rv.size() - (hasCommands ? 2 : 1));
-
             return rv;
         }
 

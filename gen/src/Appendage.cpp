@@ -216,7 +216,7 @@ namespace emb
                 if (code.getInsert() == parser::Code::Insert::Each)
                 {
                     std::string block = "";
-                    block += "for (uint16_t i = 0; i < " + std::to_string(m_json.size()) + "u; ++i) {\n";
+                    block += "for (uint16_t i = 0; i <= " + std::to_string(m_json.size() - 1) + "u; ++i) {\n";
                     block += replaceVariables(code.getText(), "[i]");
                     block += "\n}\n";
                     rv += indent(block);
