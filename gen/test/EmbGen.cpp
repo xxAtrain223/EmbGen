@@ -35,7 +35,7 @@ namespace emb
                     "}\n"
                     "\n"
                     "/*** EMBGEN_COMMANDS ***/\n";
-                EmbGen embGen(config, "../data/appendages", inoTemplate);
+                EmbGen embGen(config, "data/appendages", inoTemplate);
 
                 ASSERT_EQ(embGen.generateSource(),
                     "#include <EmbMessenger/SerialBuffer.hpp>\n"
@@ -98,7 +98,7 @@ namespace emb
                     "}\n"
                     "\n"
                     "/*** EMBGEN_COMMANDS ***/\n";
-                EmbGen embGen(config, "../data/appendages", inoTemplate);
+                EmbGen embGen(config, "data/appendages", inoTemplate);
 
                 ASSERT_EQ(embGen.generateSource(),
                     "#include <EmbMessenger/SerialBuffer.hpp>\n"
