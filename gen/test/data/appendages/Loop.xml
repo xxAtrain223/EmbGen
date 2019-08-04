@@ -1,0 +1,17 @@
+<appendage name='Loop'>
+    <variable type='uint8_t' name='VarOne' />
+    <variable type='int16_t' name='VarTwo' />
+    <loop>
+        <code insert='each'>
+            VarOne += 1;
+            VarTwo -= 1;
+        </code>
+        <code insert='once'>
+            delay(500);
+        </code>
+        <code insert='each'>
+            VarTwo += 1;
+            VarOne -= 1;
+        </code>
+    </loop>
+</appendage>

@@ -1,0 +1,4 @@
+<appendage name='Variable'>
+    <variable type='uint8_t' name='VarOne' />
+    <variable type='int16_t' name='VarTwo' />
+</appendage>

@@ -1,0 +1,10 @@
+<appendage name='Stop'>
+    <variable type='uint8_t' name='VarOne' />
+    <variable type='int16_t' name='VarTwo' />
+    <stop>
+        <code>
+            VarOne = 0;
+            VarTwo = 0;
+        </code>
+    </stop>
+</appendage>

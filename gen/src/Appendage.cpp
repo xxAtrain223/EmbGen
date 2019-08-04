@@ -186,7 +186,7 @@ namespace emb
                 if (code.getInsert() == parser::Code::Insert::Each)
                 {
                     std::string block = "";
-                    block += "for (uint16_t i = 0; i <= " + std::to_string(m_json.size() - 1) + "u; ++i) {\n";
+                    block += "for (uint16_t i = 0u; i <= " + std::to_string(m_json.size() - 1) + "u; ++i) {\n";
                     block += replaceVariables(code.getText(), "[i]");
                     block += "\n}\n";
                     rv += indent(block);
@@ -216,7 +216,7 @@ namespace emb
                 if (code.getInsert() == parser::Code::Insert::Each)
                 {
                     std::string block = "";
-                    block += "for (uint16_t i = 0; i <= " + std::to_string(m_json.size() - 1) + "u; ++i) {\n";
+                    block += "for (uint16_t i = 0u; i <= " + std::to_string(m_json.size() - 1) + "u; ++i) {\n";
                     block += replaceVariables(code.getText(), "[i]");
                     block += "\n}\n";
                     rv += indent(block);
@@ -371,7 +371,7 @@ namespace emb
                 rv += "void " + m_xml->getName() + "_stop()\n{\n";
                 std::string block = "";
                 std::shared_ptr<parser::Code> code = stop->getCode();
-                block += "for (uint16_t i = 0; i <= " + std::to_string(m_json.size() - 1) + "u; ++i)\n{\n";
+                block += "for (uint16_t i = 0u; i <= " + std::to_string(m_json.size() - 1) + "u; ++i) {\n";
                 if (code != nullptr)
                 {
                     block += replaceVariables(code->getText(), "[i]") + "\n";
@@ -398,7 +398,11 @@ namespace emb
                 rv += getCommandFunction(command.second) + "\n";
             }
 
-            rv += getStopFunction(m_xml->getStop()) + "\n";
+            std::shared_ptr<parser::Stop> stopCommand = m_xml->getStop();
+            if (stopCommand != nullptr)
+            {
+                rv += getStopFunction(stopCommand) + "\n";
+            }
 
             return rv;
         }

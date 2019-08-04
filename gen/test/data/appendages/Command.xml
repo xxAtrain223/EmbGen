@@ -1,0 +1,20 @@
+<appendage name='Command'>
+    <variable type='uint8_t' name='VarOne' />
+    <variable type='int16_t' name='VarTwo' />
+    <command name='get'>
+        <return_value type='uint8_t' name='one' />
+        <return_value type='int16_t' name='two' />
+        <code>
+            one = VarOne;
+            two = VarTwo;
+        </code>
+    </command>
+    <command name='set'>
+        <parameter type='uint8_t' name='one' />
+        <parameter type='int16_t' name='two' min='-1024' max='1024' />
+        <code>
+            VarOne = one;
+            VarTwo = two;
+        </code>
+    </command>
+</appendage>

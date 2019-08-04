@@ -197,12 +197,12 @@ namespace emb
 
                 ASSERT_EQ(
                     appendage.getSetup(),
-                    "    for (uint16_t i = 0; i <= 1u; ++i) {\n"
+                    "    for (uint16_t i = 0u; i <= 1u; ++i) {\n"
                     "        Servo_servo[i].attach(Servo_pin[i]);\n"
                     "        Servo_servo[i].write(Servo_init_value[i]);\n"
                     "    }\n"
                     "    delay(500);\n"
-                    "    for (uint16_t i = 0; i <= 1u; ++i) {\n"
+                    "    for (uint16_t i = 0u; i <= 1u; ++i) {\n"
                     "        Servo_servo[i].detach();\n"
                     "    }\n"
                 );
@@ -266,7 +266,7 @@ namespace emb
                 ASSERT_EQ(
                     appendage.getLoop(),
                     "    func(Loop_durA, Loop_durB);\n"
-                    "    for (uint16_t i = 0; i <= 2u; ++i) {\n"
+                    "    for (uint16_t i = 0u; i <= 2u; ++i) {\n"
                     "        func2(Loop_durA[i], Loop_durB[i]);\n"
                     "    }\n"
                 );
@@ -486,8 +486,7 @@ namespace emb
                     "\n"
                     "void Servo_stop()\n"
                     "{\n"
-                    "    for (uint16_t i = 0; i <= 1u; ++i)\n"
-                    "    {\n"
+                    "    for (uint16_t i = 0u; i <= 1u; ++i) {\n"
                     "        Servo_detach(i);\n"
                     "    }\n"
                     "}\n"
@@ -543,8 +542,7 @@ namespace emb
                     appendage.getCommandFunctions("messenger"),
                     "void Servo_stop()\n"
                     "{\n"
-                    "    for (uint16_t i = 0; i <= 1u; ++i)\n"
-                    "    {\n"
+                    "    for (uint16_t i = 0u; i <= 1u; ++i) {\n"
                     "        Servo_servo[i].detach();\n"
                     "    }\n"
                     "}\n"

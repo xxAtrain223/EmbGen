@@ -18,7 +18,11 @@ namespace emb
 
             for (const Appendage& appendage : m_appendages)
             {
-                rv += appendage.getIncludes() + "\n";
+                std::string includes = appendage.getIncludes();
+                if (!includes.empty())
+                {
+                    rv += appendage.getIncludes() + "\n";
+                }
             }
 
             rv = rv.substr(0, rv.size() - 2);
