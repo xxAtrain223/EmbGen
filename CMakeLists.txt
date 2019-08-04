@@ -14,5 +14,7 @@ if (EMB_ENABLE_TESTING)
     cmake_policy(SET CMP0057 NEW)
     include(GoogleTest)
     gtest_add_tests(EmbGenParserTest "" AUTO)
-	gtest_add_tests(EmbGenTest "" AUTO)
+
+    file(GLOB_RECURSE EmbGenTestSources "gen/test/*.cpp")
+    gtest_add_tests(EmbGenTest "" ${EmbGenTestSources})
 endif()
