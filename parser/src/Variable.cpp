@@ -28,6 +28,15 @@ namespace emb
                     m_parameters.emplace_back(parameter);
                 }
 
+                try
+                {
+                    m_appendage = getAttribute("appendage")->Value();
+                }
+                catch (AttributeException)
+                {
+                    m_appendage = "";
+                }
+
                 if (!isAttributesEmpty())
                 {
                     throw AttributeException("Extra attributes for Include on line " + std::to_string(getLineNum()));
@@ -52,6 +61,11 @@ namespace emb
             bool Variable::isCore() const
             {
                 return m_core;
+            }
+
+            std::string Variable::getAppendage() const
+            {
+                return m_appendage;
             }
 
             std::vector<Parameter> Variable::getParameters() const

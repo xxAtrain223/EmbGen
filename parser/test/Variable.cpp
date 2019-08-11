@@ -26,6 +26,7 @@ namespace emb
                     ASSERT_EQ(variable.getName(), "val");
                     ASSERT_FALSE(variable.isCore());
                     ASSERT_EQ(variable.getParameters().size(), 0);
+                    ASSERT_EQ(variable.getAppendage(), "");
                 }
 
                 TEST(parser_Variable, CoreVal)
@@ -43,6 +44,7 @@ namespace emb
                     ASSERT_EQ(variable.getName(), "coreVal");
                     ASSERT_TRUE(variable.isCore());
                     ASSERT_EQ(variable.getParameters().size(), 0);
+                    ASSERT_EQ(variable.getAppendage(), "");
                 }
 
                 TEST(parser_Variable, Parameters)
@@ -62,6 +64,45 @@ namespace emb
                     ASSERT_EQ(variable.getName(), "bar");
                     ASSERT_FALSE(variable.isCore());
                     ASSERT_EQ(variable.getParameters().size(), 1);
+                    ASSERT_EQ(variable.getAppendage(), "");
+                }
+
+                TEST(parser_Variable, Appendage)
+                {
+                    tinyxml2::XMLDocument tinyDocument;
+                    ASSERT_EQ(tinyDocument.Parse(
+                        "<variable type='uint8_t' name='val' appendage='OtherAppendage' />\n"
+                    ), tinyxml2::XMLError::XML_SUCCESS);
+                    tinyxml2::XMLElement* tinyElement = tinyDocument.FirstChildElement("variable");
+                    ASSERT_NE(tinyElement, nullptr);
+
+                    Variable variable(tinyElement);
+
+                    ASSERT_EQ(variable.getType(), "uint8_t");
+                    ASSERT_EQ(variable.getName(), "val");
+                    ASSERT_FALSE(variable.isCore());
+                    ASSERT_EQ(variable.getParameters().size(), 0);
+                    ASSERT_EQ(variable.getAppendage(), "OtherAppendage");
+                }
+
+                TEST(parser_Variable, AppendageParameter)
+                {
+                    tinyxml2::XMLDocument tinyDocument;
+                    ASSERT_EQ(tinyDocument.Parse(
+                        "<variable type='Foo' name='bar' core='false'>\n"
+                        "    <parameter type='int16_t*' name='baz' appendage='OtherAppendage' />\n"
+                        "</variable>\n"
+                    ), tinyxml2::XMLError::XML_SUCCESS);
+                    tinyxml2::XMLElement* tinyElement = tinyDocument.FirstChildElement("variable");
+                    ASSERT_NE(tinyElement, nullptr);
+
+                    Variable variable(tinyElement);
+
+                    ASSERT_EQ(variable.getType(), "Foo");
+                    ASSERT_EQ(variable.getName(), "bar");
+                    ASSERT_FALSE(variable.isCore());
+                    ASSERT_EQ(variable.getParameters().size(), 1);
+                    ASSERT_EQ(variable.getAppendage(), "");
                 }
 
                 TEST(parser_Variable, MissingType)

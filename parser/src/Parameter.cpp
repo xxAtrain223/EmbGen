@@ -42,6 +42,15 @@ namespace emb
                     m_max = "";
                 }
 
+                try
+                {
+                    m_appendage = getAttribute("appendage")->Value();
+                }
+                catch (AttributeException)
+                {
+                    m_appendage = "";
+                }
+
                 if (!isAttributesEmpty())
                 {
                     throw AttributeException("Extra attributes for Parameter on line " + std::to_string(getLineNum()));
@@ -76,6 +85,11 @@ namespace emb
             bool Parameter::isCore() const
             {
                 return m_core;
+            }
+
+            std::string Parameter::getAppendage() const
+            {
+                return m_appendage;
             }
         }
     }

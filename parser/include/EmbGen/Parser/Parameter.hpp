@@ -11,7 +11,7 @@ namespace emb
         {
             class Parameter : public XmlElement
             {
-                std::string m_type, m_name, m_min, m_max;
+                std::string m_type, m_name, m_min, m_max, m_appendage;
                 bool m_core;
 
             public:
@@ -26,6 +26,8 @@ namespace emb
                 std::string getMax() const;
 
                 bool isCore() const;
+
+                std::string getAppendage() const;
             };
         }
     }

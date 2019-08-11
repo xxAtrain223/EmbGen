@@ -14,7 +14,7 @@ namespace emb
         {
             class Variable : private XmlElement
             {
-                std::string m_type, m_name;
+                std::string m_type, m_name, m_appendage;
                 bool m_core;
                 std::vector<Parameter> m_parameters;
 
@@ -26,6 +26,8 @@ namespace emb
                 std::string getName() const;
 
                 bool isCore() const;
+
+                std::string getAppendage() const;
 
                 std::vector<Parameter> getParameters() const;
             };

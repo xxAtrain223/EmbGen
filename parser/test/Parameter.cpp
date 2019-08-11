@@ -25,6 +25,7 @@ namespace emb
                     ASSERT_EQ(parameter.getType(), "uint8_t");
                     ASSERT_EQ(parameter.getName(), "val");
                     ASSERT_FALSE(parameter.isCore());
+                    ASSERT_EQ(parameter.getAppendage(), "");
                 }
 
                 TEST(parser_Parameter, VariableParameter)
@@ -41,6 +42,24 @@ namespace emb
                     ASSERT_EQ(parameter.getType(), "int16_t");
                     ASSERT_EQ(parameter.getName(), "val");
                     ASSERT_TRUE(parameter.isCore());
+                    ASSERT_EQ(parameter.getAppendage(), "");
+                }
+
+                TEST(parser_Parameter, Appendage)
+                {
+                    tinyxml2::XMLDocument tinyDocument;
+                    ASSERT_EQ(tinyDocument.Parse(
+                        "<parameter type='int16_t' name='val' appendage='OtherAppendage' />\n"
+                    ), tinyxml2::XMLError::XML_SUCCESS);
+                    tinyxml2::XMLElement* tinyElement = tinyDocument.FirstChildElement("parameter");
+                    ASSERT_NE(tinyElement, nullptr);
+
+                    Parameter parameter(tinyElement);
+
+                    ASSERT_EQ(parameter.getType(), "int16_t");
+                    ASSERT_EQ(parameter.getName(), "val");
+                    ASSERT_FALSE(parameter.isCore());
+                    ASSERT_EQ(parameter.getAppendage(), "OtherAppendage");
                 }
 
                 TEST(parser_Parameter, ParameterValidation)
