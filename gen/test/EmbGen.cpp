@@ -15,7 +15,7 @@ namespace emb
         {
             TEST(embgen_EmbGen, no_appendages)
             {
-                std::string config = "[]";
+                std::string config = "{}";
                 std::string inoTemplate =
                     "#include <EmbMessenger/SerialBuffer.hpp>\n"
                     "/*** EMBGEN_INCLUDES ***/\n"

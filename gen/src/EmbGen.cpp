@@ -158,10 +158,23 @@ namespace emb
         {
             nlohmann::json jsonConfig = nlohmann::json::parse(config);
 
+            std::map<std::string, uint16_t> appendageIndexes;
             nlohmann::json appendageTypes;
             for (nlohmann::json appendage : jsonConfig)
             {
-                appendageTypes[appendage.at("type").get<std::string>()].emplace_back(appendage);
+                std::string appendageType = appendage.at("type").get<std::string>();
+                uint16_t index;
+                try
+                {
+                    index = appendageIndexes.at(appendageType);
+                }
+                catch (std::out_of_range)
+                {
+                    index = 0;
+                }
+                appendage["typeIndex"] = index;
+                appendageIndexes[appendageType] = index + 1;
+                appendageTypes[appendageType][appendage.at("label").get<std::string>()] = appendage;
             }
 
             for (auto& appendageType : appendageTypes.items())
@@ -173,7 +186,7 @@ namespace emb
                 }
                 m_appendages.emplace_back(
                     std::make_shared<parser::Appendage>(tinyDocument.FirstChildElement("appendage")),
-                    appendageType.value()
+                    appendageTypes
                 );
             }
         }

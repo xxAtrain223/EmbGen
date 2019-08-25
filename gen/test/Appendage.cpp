@@ -37,16 +37,22 @@ namespace emb
                 ASSERT_EQ(xml->getCommands().size(), 0);
                 ASSERT_EQ(xml->getStop(), nullptr);
 
-                nlohmann::json json = {
-                    {
-                        { "label", "include_alpha" },
-                        { "type", "Include" }
-                    },
-                    {
-                        { "label", "include_bravo" },
-                        { "type", "Include" }
-                    }
-                };
+                nlohmann::json json = nlohmann::json::parse(
+                    R"({)"
+                    R"(    "Include": {)"
+                    R"(        "include_alpha": {)"
+                    R"(            "typeIndex": 0)"
+                    R"(        },)"
+                    R"(        "include_bravo": {)"
+                    R"(            "typeIndex": 1)"
+                    R"(        })"
+                    R"(    })"
+                    R"(})"
+                );
+
+                nlohmann::json includes = json["Include"];
+
+                std::string str = includes.dump();
 
                 Appendage appendage(xml, json);
 
@@ -88,26 +94,28 @@ namespace emb
                 ASSERT_EQ(xml->getCommands().size(), 0);
                 ASSERT_EQ(xml->getStop(), nullptr);
 
-                nlohmann::json json = {
-                    {
-                        { "label", "include_alpha" },
-                        { "type", "Include" },
-                        { "val1", 255 },
-                        { "val2", -512 },
-                        { "val3", 123456789 },
-                        { "val4", 3.14f },
-                        { "val5", "alpha" }  
-                    },
-                    {
-                        { "label", "include_bravo" },
-                        { "type", "Include" },
-                        { "val1", 127 },
-                        { "val2", -1024 },
-                        { "val3", 987654321 },
-                        { "val4", 6.28f },
-                        { "val5", "bravo" }
-                    }
-                };
+                nlohmann::json json = nlohmann::json::parse(
+                    R"({)"
+                    R"(    "Variable": {)"
+                    R"(        "variable_alpha": {)"
+                    R"(            "val1": 255,)"
+                    R"(            "val2": -512,)"
+                    R"(            "val3": 123456789,)"
+                    R"(            "val4": 3.14,)"
+                    R"(            "val5": "alpha",)"
+                    R"(            "typeIndex": 0)"
+                    R"(        },)"
+                    R"(        "variable_bravo": {)"
+                    R"(            "val1": 127,)"
+                    R"(            "val2": -1024,)"
+                    R"(            "val3": 987654321,)"
+                    R"(            "val4": 6.28,)"
+                    R"(            "val5": "bravo",)"
+                    R"(            "typeIndex": 1)"
+                    R"(        })"
+                    R"(    })"
+                    R"(})"
+                );
 
                 Appendage appendage(xml, json);
 
@@ -124,12 +132,12 @@ namespace emb
                     "Foo Variable_foo[2] = {\n"
                     "    Foo(\n"
                     "        123456789,\n"
-                    "        3.140000104904175f,\n"
+                    "        3.14f,\n"
                     "        \"alpha\"\n"
                     "    ),\n"
                     "    Foo(\n"
                     "        987654321,\n"
-                    "        6.28000020980835f,\n"
+                    "        6.28f,\n"
                     "        \"bravo\"\n"
                     "    )\n"
                     "};\n"
@@ -178,20 +186,22 @@ namespace emb
                 ASSERT_EQ(xml->getCommands().size(), 0);
                 ASSERT_EQ(xml->getStop(), nullptr);
 
-                nlohmann::json json = {
-                    {
-                        { "label", "servo_alpha" },
-                        { "type", "Servo" },
-                        { "pin", 10 },
-                        { "init_value", 60 }
-                    },
-                    {
-                        { "label", "servo_bravo" },
-                        { "type", "Servo" },
-                        { "pin", 11 },
-                        { "init_value", 120 }
-                    }
-                };
+                nlohmann::json json = nlohmann::json::parse(
+                    R"({)"
+                    R"(    "Servo": {)"
+                    R"(        "servo_alpha": {)"
+                    R"(            "pin": 10,)"
+                    R"(            "init_value": 60,)"
+                    R"(            "typeIndex": 0)"
+                    R"(        },)"
+                    R"(        "servo_bravo": {)"
+                    R"(            "pin": 11,)"
+                    R"(            "init_value": 120,)"
+                    R"(            "typeIndex": 1)"
+                    R"(        })"
+                    R"(    })"
+                    R"(})"
+                );
 
                 Appendage appendage(xml, json);
 
@@ -240,26 +250,27 @@ namespace emb
                 ASSERT_EQ(xml->getCommands().size(), 0);
                 ASSERT_EQ(xml->getStop(), nullptr);
 
-                nlohmann::json json = {
-                    {
-                        { "label", "servo_alpha" },
-                        { "type", "Servo" },
-                        { "durA", 7 },
-                        { "durB", 42 }
-                    },
-                    {
-                        { "label", "servo_bravo" },
-                        { "type", "Servo" },
-                        { "durA", 30 },
-                        { "durB", 6 }
-                    },
-                    {
-                        { "label", "servo_bravo" },
-                        { "type", "Servo" },
-                        { "durA", 50 },
-                        { "durB", 2 }
-                    }
-                };
+                nlohmann::json json = nlohmann::json::parse(
+                    R"({)"
+                    R"(    "Loop": {)"
+                    R"(        "loop_alpha": {)"
+                    R"(            "durA": 7,)"
+                    R"(            "durB": 42,)"
+                    R"(            "typeIndex": 0)"
+                    R"(        },)"
+                    R"(        "loop_bravo": {)"
+                    R"(            "durA": 30,)"
+                    R"(            "durB": 6,)"
+                    R"(            "typeIndex": 1)"
+                    R"(        },)"
+                    R"(        "loop_charlie": {)"
+                    R"(            "durA": 50,)"
+                    R"(            "durB": 2,)"
+                    R"(            "typeIndex": 2)"
+                    R"(        })"
+                    R"(    })"
+                    R"(})"
+                );
 
                 Appendage appendage(xml, json);
 
@@ -325,20 +336,22 @@ namespace emb
                 ASSERT_EQ(xml->getCommands().size(), 2);
                 ASSERT_NE(xml->getStop(), nullptr);
 
-                nlohmann::json json = {
-                    {
-                        { "label", "servo_alpha" },
-                        { "type", "Servo" },
-                        { "pin", 10 },
-                        { "init_value", 60 }
-                    },
-                    {
-                        { "label", "servo_bravo" },
-                        { "type", "Servo" },
-                        { "pin", 11 },
-                        { "init_value", 120 }
-                    },
-                };
+                nlohmann::json json = nlohmann::json::parse(
+                    R"({)"
+                    R"(    "Servo": {)"
+                    R"(        "servo_alpha": {)"
+                    R"(            "pin": 10,)"
+                    R"(            "init_value": 60,)"
+                    R"(            "typeIndex": 0)"
+                    R"(        },)"
+                    R"(        "servo_bravo": {)"
+                    R"(            "pin": 11,)"
+                    R"(            "init_value": 120,)"
+                    R"(            "typeIndex": 1)"
+                    R"(        })"
+                    R"(    })"
+                    R"(})"
+                );
 
                 Appendage appendage(xml, json);
 
@@ -406,20 +419,22 @@ namespace emb
                 ASSERT_EQ(xml->getCommands().size(), 3);
                 ASSERT_NE(xml->getStop(), nullptr);
 
-                nlohmann::json json = {
-                    {
-                        { "label", "servo_alpha" },
-                        { "type", "Servo" },
-                        { "pin", 10 },
-                        { "init_value", 60 }
-                    },
-                    {
-                        { "label", "servo_bravo" },
-                        { "type", "Servo" },
-                        { "pin", 11 },
-                        { "init_value", 120 }
-                    },
-                };
+                nlohmann::json json = nlohmann::json::parse(
+                    R"({)"
+                    R"(    "Servo": {)"
+                    R"(        "servo_alpha": {)"
+                    R"(            "pin": 10,)"
+                    R"(            "init_value": 60,)"
+                    R"(            "typeIndex": 0)"
+                    R"(        },)"
+                    R"(        "servo_bravo": {)"
+                    R"(            "pin": 11,)"
+                    R"(            "init_value": 120,)"
+                    R"(            "typeIndex": 1)"
+                    R"(        })"
+                    R"(    })"
+                    R"(})"
+                );
 
                 Appendage appendage(xml, json);
 
@@ -521,20 +536,22 @@ namespace emb
                 ASSERT_EQ(xml->getCommands().size(), 0);
                 ASSERT_NE(xml->getStop(), nullptr);
 
-                nlohmann::json json = {
-                    {
-                        { "label", "servo_alpha" },
-                        { "type", "Servo" },
-                        { "pin", 10 },
-                        { "init_value", 60 }
-                    },
-                    {
-                        { "label", "servo_bravo" },
-                        { "type", "Servo" },
-                        { "pin", 11 },
-                        { "init_value", 120 }
-                    },
-                };
+                nlohmann::json json = nlohmann::json::parse(
+                    R"({)"
+                    R"(    "Servo": {)"
+                    R"(        "servo_alpha": {)"
+                    R"(            "pin": 10,)"
+                    R"(            "init_value": 60,)"
+                    R"(            "typeIndex": 0)"
+                    R"(        },)"
+                    R"(        "servo_bravo": {)"
+                    R"(            "pin": 11,)"
+                    R"(            "init_value": 120,)"
+                    R"(            "typeIndex": 1)"
+                    R"(        })"
+                    R"(    })"
+                    R"(})"
+                );
 
                 Appendage appendage(xml, json);
 

@@ -19,7 +19,7 @@ namespace emb
         class Appendage
         {
             std::shared_ptr<parser::Appendage> m_xml;
-            nlohmann::json m_json;
+            nlohmann::json m_json, m_appendages;
 
             std::string replaceVariables(std::string block, std::string append = "") const;
 

@@ -10,8 +10,9 @@ namespace emb
     namespace gen
     {
         Appendage::Appendage(std::shared_ptr<parser::Appendage> xml, const nlohmann::json& json) :
-            m_xml(xml), m_json(json)
+            m_xml(xml), m_appendages(json), m_json(json[xml->getName()])
         {
+            std::string str = json.dump();
         }
 
         std::string Appendage::getName() const
@@ -87,11 +88,20 @@ namespace emb
         {
             std::string rv = "";
 
+            // TODO: Add appendage index mappers
+
             for (const parser::Variable& variable : m_xml->getVariables())
             {
-                if (isPrimitive(variable.getType()) || variable.getType() == "String")
+                if (!variable.getAppendage().empty())
                 {
-                    rv += variable.getType() + " " +
+                    continue;
+                }
+
+                std::string variableType = variable.getType();
+
+                if (isPrimitive(variableType) || variableType == "String")
+                {
+                    rv += variableType + " " +
                         m_xml->getName() + "_" +
                         variable.getName() + "[" +
                         std::to_string(m_json.size()) + "]" + " = {\n";
@@ -99,7 +109,7 @@ namespace emb
                     for (nlohmann::json appendage : m_json)
                     {
                         rv += "    " + appendage.at(variable.getName()).dump() + 
-                            ((variable.getType() == "float") ? "f" : "") + ",\n";
+                            ((variableType == "float") ? "f" : "") + ",\n";
                     }
 
                     rv = rv.substr(0, rv.size() - 2) + "\n";
@@ -108,7 +118,7 @@ namespace emb
                 }
                 else
                 {
-                    rv += variable.getType() + " " +
+                    rv += variableType + " " +
                         m_xml->getName() + "_" +
                         variable.getName() + "[" +
                         std::to_string(m_json.size()) + "]" + " = {\n";
@@ -119,16 +129,26 @@ namespace emb
                         
                         if (parameters.empty())
                         {
-                            rv += "    " + variable.getType() + "(),\n";
+                            rv += "    " + variableType + "(),\n";
                         }
                         else
                         {
-                            rv += "    " + variable.getType() + "(\n";
+                            rv += "    " + variableType + "(\n";
 
-                            for (const parser::Parameter& parameter : parameters)
+                            for (int i = 0; i < parameters.size(); ++i)
                             {
-                                rv += "        " + appendage.at(parameter.getName()).dump() +
-                                    ((parameter.getType() == "float") ? "f" : "") + ",\n";
+                                const parser::Parameter& parameter = parameters[i];
+
+                                if (!parameter.getAppendage().empty())
+                                {
+                                    rv += "        " + parameter.getAppendage() + "_" + parameter.getName() +
+                                        "[" + m_xml->getName() + "_" + parameter.getName() + "[" + std::to_string(i) + "]],\n";
+                                }
+                                else
+                                {
+                                    rv += "        " + appendage.at(parameter.getName()).dump() +
+                                        ((parameter.getType() == "float") ? "f" : "") + ",\n";
+                                }
                             }
 
                             rv = rv.substr(0, rv.size() - 2) + "\n";
@@ -164,8 +184,18 @@ namespace emb
         {
             for (const parser::Variable& variable : m_xml->getVariables())
             {
-                block = std::regex_replace(block, std::regex(variable.getName()), 
-                    m_xml->getName() + "_" + variable.getName() + append);
+                std::string replaceStr;
+                if (variable.getAppendage().empty())
+                {
+                    replaceStr = m_xml->getName() + "_" + variable.getName() + append;
+                }
+                else
+                {
+                    replaceStr = variable.getAppendage() + "_" + variable.getName() + "[" +
+                        m_xml->getName() + "_" + variable.getName() + "[i]]";
+                }
+
+                block = std::regex_replace(block, std::regex(variable.getName()), replaceStr);
             }
             return block;
         }
