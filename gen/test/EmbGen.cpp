@@ -65,16 +65,12 @@ namespace emb
             TEST(embgen_EmbGen, Include)
             {
                 std::string config =
-                    R"([)"
-                    R"(    {)"
-                    R"(        "label": "include_alpha",)"
-                    R"(        "type": "Include")"
-                    R"(    },)"
-                    R"(    {)"
-                    R"(        "label": "include_bravo",)"
-                    R"(        "type": "Include")"
+                    R"({)"
+                    R"(    "Include": {)"
+                    R"(        "include_alpha": {},)"
+                    R"(        "include_bravo": {})"
                     R"(    })"
-                    R"(])";
+                    R"(})";
                 std::string inoTemplate =
                     "#include <EmbMessenger/SerialBuffer.hpp>\n"
                     "/*** EMBGEN_INCLUDES ***/\n"
@@ -128,20 +124,18 @@ namespace emb
             TEST(embgen_EmbGen, Variable)
             {
                 std::string config =
-                    R"([)"
-                    R"(    {)"
-                    R"(        "label": "variable_alpha",)"
-                    R"(        "type": "Variable",)"
-                    R"(        "VarOne": 1,)"
-                    R"(        "VarTwo": -2)"
-                    R"(    },)"
-                    R"(    {)"
-                    R"(        "label": "variable_bravo",)"
-                    R"(        "type": "Variable",)"
-                    R"(        "VarOne": 3,)"
-                    R"(        "VarTwo": -4)"
+                    R"({)"
+                    R"(    "Variable": {)"
+                    R"(        "variable_alpha": {)"
+                    R"(            "VarOne": 1,)"
+                    R"(            "VarTwo": -2)"
+                    R"(        },)"
+                    R"(        "variable_bravo": {)"
+                    R"(            "VarOne": 3,)"
+                    R"(            "VarTwo": -4)"
+                    R"(        })"
                     R"(    })"
-                    R"(])";
+                    R"(})";
                 std::string inoTemplate =
                     "#include <EmbMessenger/SerialBuffer.hpp>\n"
                     "/*** EMBGEN_INCLUDES ***/\n"
@@ -200,20 +194,18 @@ namespace emb
             TEST(embgen_EmbGen, Setup)
             {
                 std::string config =
-                    R"([)"
-                    R"(    {)"
-                    R"(        "label": "setup_alpha",)"
-                    R"(        "type": "Setup",)"
-                    R"(        "VarOne": 1,)"
-                    R"(        "VarTwo": -2)"
-                    R"(    },)"
-                    R"(    {)"
-                    R"(        "label": "setup_bravo",)"
-                    R"(        "type": "Setup",)"
-                    R"(        "VarOne": 3,)"
-                    R"(        "VarTwo": -4)"
+                    R"({)"
+                    R"(    "Setup": {)"
+                    R"(        "setup_alpha": {)"
+                    R"(            "VarOne": 1,)"
+                    R"(            "VarTwo": -2)"
+                    R"(        },)"
+                    R"(        "setup_bravo": {)"
+                    R"(            "VarOne": 3,)"
+                    R"(            "VarTwo": -4)"
+                    R"(        })"
                     R"(    })"
-                    R"(])";
+                    R"(})";
                 std::string inoTemplate =
                     "#include <EmbMessenger/SerialBuffer.hpp>\n"
                     "/*** EMBGEN_INCLUDES ***/\n"
@@ -280,20 +272,18 @@ namespace emb
             TEST(embgen_EmbGen, Loop)
             {
                 std::string config =
-                    R"([)"
-                    R"(    {)"
-                    R"(        "label": "loop_alpha",)"
-                    R"(        "type": "Loop",)"
-                    R"(        "VarOne": 1,)"
-                    R"(        "VarTwo": -2)"
-                    R"(    },)"
-                    R"(    {)"
-                    R"(        "label": "loop_bravo",)"
-                    R"(        "type": "Loop",)"
-                    R"(        "VarOne": 3,)"
-                    R"(        "VarTwo": -4)"
+                    R"({)"
+                    R"(    "Loop": {)"
+                    R"(        "loop_alpha": {)"
+                    R"(            "VarOne": 1,)"
+                    R"(            "VarTwo": -2)"
+                    R"(        },)"
+                    R"(        "loop_bravo": {)"
+                    R"(            "VarOne": 3,)"
+                    R"(            "VarTwo": -4)"
+                    R"(        })"
                     R"(    })"
-                    R"(])";
+                    R"(})";
                 std::string inoTemplate =
                     "#include <EmbMessenger/SerialBuffer.hpp>\n"
                     "/*** EMBGEN_INCLUDES ***/\n"
@@ -356,20 +346,18 @@ namespace emb
             TEST(embgen_EmbGen, Command)
             {
                 std::string config =
-                    R"([)"
-                    R"(    {)"
-                    R"(        "label": "command_alpha",)"
-                    R"(        "type": "Command",)"
-                    R"(        "VarOne": 1,)"
-                    R"(        "VarTwo": -2)"
-                    R"(    },)"
-                    R"(    {)"
-                    R"(        "label": "command_bravo",)"
-                    R"(        "type": "Command",)"
-                    R"(        "VarOne": 3,)"
-                    R"(        "VarTwo": -4)"
+                    R"({)"
+                    R"(    "Command": {)"
+                    R"(        "command_alpha": {)"
+                    R"(            "VarOne": 1,)"
+                    R"(            "VarTwo": -2)"
+                    R"(        },)"
+                    R"(        "command_bravo": {)"
+                    R"(            "VarOne": 3,)"
+                    R"(            "VarTwo": -4)"
+                    R"(        })"
                     R"(    })"
-                    R"(])";
+                    R"(})";
                 std::string inoTemplate =
                     "#include <EmbMessenger/SerialBuffer.hpp>\n"
                     "/*** EMBGEN_INCLUDES ***/\n"
@@ -478,20 +466,18 @@ namespace emb
             TEST(embgen_EmbGen, Stop)
             {
                 std::string config =
-                    R"([)"
-                    R"(    {)"
-                    R"(        "label": "stop_alpha",)"
-                    R"(        "type": "Stop",)"
-                    R"(        "VarOne": 1,)"
-                    R"(        "VarTwo": -2)"
-                    R"(    },)"
-                    R"(    {)"
-                    R"(        "label": "stop_bravo",)"
-                    R"(        "type": "Stop",)"
-                    R"(        "VarOne": 3,)"
-                    R"(        "VarTwo": -4)"
+                    R"({)"
+                    R"(    "Stop": {)"
+                    R"(        "stop_alpha": {)"
+                    R"(            "VarOne": 1,)"
+                    R"(            "VarTwo": -2)"
+                    R"(        },)"
+                    R"(        "stop_bravo": {)"
+                    R"(            "VarOne": 3,)"
+                    R"(            "VarTwo": -4)"
+                    R"(        })"
                     R"(    })"
-                    R"(])";
+                    R"(})";
                 std::string inoTemplate =
                     "#include <EmbMessenger/SerialBuffer.hpp>\n"
                     "/*** EMBGEN_INCLUDES ***/\n"
@@ -560,20 +546,18 @@ namespace emb
             TEST(embgen_EmbGen, Everything)
             {
                 std::string config =
-                    R"([)"
-                    R"(    {)"
-                    R"(        "label": "everything_alpha",)"
-                    R"(        "type": "Everything",)"
-                    R"(        "VarOne": 1,)"
-                    R"(        "VarTwo": -2)"
-                    R"(    },)"
-                    R"(    {)"
-                    R"(        "label": "everything_bravo",)"
-                    R"(        "type": "Everything",)"
-                    R"(        "VarOne": 3,)"
-                    R"(        "VarTwo": -4)"
+                    R"({)"
+                    R"(    "Everything": {)"
+                    R"(        "everything_alpha": {)"
+                    R"(            "VarOne": 1,)"
+                    R"(            "VarTwo": -2)"
+                    R"(        },)"
+                    R"(        "everything_bravo": {)"
+                    R"(            "VarOne": 3,)"
+                    R"(            "VarTwo": -4)"
+                    R"(        })"
                     R"(    })"
-                    R"(])";
+                    R"(})";
                 std::string inoTemplate =
                     "#include <EmbMessenger/SerialBuffer.hpp>\n"
                     "/*** EMBGEN_INCLUDES ***/\n"
