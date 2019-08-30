@@ -565,6 +565,92 @@ namespace emb
                     "}\n"
                     "\n");
             }
+
+            TEST(embgen_Appendage, AppendageDependencies)
+            {
+                tinyxml2::XMLDocument tinyDocument;
+                ASSERT_EQ(tinyDocument.Parse(
+                    "<appendage name='Alpha'>\n"
+                    "    <variable type='uint8_t' name='a' appendage='Bravo' />\n"
+                    "    <variable type='NonPrimitive' name='nonPrimitive'>\n"
+                    "        <parameter type='int16_t*' name='b' appendage='Bravo' />\n"
+                    "    </variable>\n"
+                    "    <setup>\n"
+                    "        <code>\n"
+                    "            nonPrimitive.func(a);\n"
+                    "        </code>\n"
+                    "    </setup>\n"
+                    "</appendage>\n"
+                ), tinyxml2::XMLError::XML_SUCCESS);
+                tinyxml2::XMLElement* tinyElement = tinyDocument.FirstChildElement("appendage");
+                ASSERT_NE(tinyElement, nullptr);
+
+                std::shared_ptr<parser::Appendage> xml = std::make_shared<parser::Appendage>(tinyElement);
+
+                ASSERT_EQ(xml->getName(), "Alpha");
+                ASSERT_EQ(xml->getVersion(), "");
+                ASSERT_EQ(xml->getLibDeps(), "");
+                ASSERT_EQ(xml->getIncludes().size(), 0);
+                ASSERT_EQ(xml->getVariables().size(), 2);
+                ASSERT_NE(xml->getSetup(), nullptr);
+                ASSERT_EQ(xml->getLoop(), nullptr);
+                ASSERT_EQ(xml->getCommands().size(), 0);
+                ASSERT_EQ(xml->getStop(), nullptr);
+
+                nlohmann::json json = nlohmann::json::parse(
+                    R"({)"
+                    R"(    "Bravo": {)"
+                    R"(        "bravo_one": {)"
+                    R"(            "a": 10,)"
+                    R"(            "b": -1024,)"
+                    R"(            "typeIndex": 0)"
+                    R"(        },)"
+                    R"(        "bravo_two": {)"
+                    R"(            "a": 30,)"
+                    R"(            "b": -2048,)"
+                    R"(            "typeIndex": 1)"
+                    R"(        })"
+                    R"(    },)"
+                    R"(    "Alpha": {)"
+                    R"(        "alpha_three": {)"
+                    R"(            "a": "bravo_two",)"
+                    R"(            "b": "bravo_one",)"
+                    R"(            "typeIndex": 0)"
+                    R"(        },)"
+                    R"(        "alpha_four": {)"
+                    R"(            "a": "bravo_one",)"
+                    R"(            "b": "bravo_two",)"
+                    R"(            "typeIndex": 1)"
+                    R"(        })"
+                    R"(    })"
+                    R"(})"
+                );
+
+                Appendage appendage(xml, json);
+
+                ASSERT_EQ(
+                    appendage.getVariables(),
+                    "uint16_t Alpha_a[2] = {\n"
+                    "    1u,\n"
+                    "    0u\n"
+                    "};\n"
+                    "uint16_t Alpha_b[2] = {\n"
+                    "    0u,\n"
+                    "    1u\n"
+                    "};\n"
+                    "NonPrimitive Alpha_nonPrimitive[2] ={\n"
+                    "    NonPrimitive(&Bravo_b[Alpha_b[0]]),\n"
+                    "    NonPrimitive(&Bravo_b[Alpha_b[1]])\n"
+                    "};\n"
+                );
+
+                ASSERT_EQ(
+                    appendage.getSetup(),
+                    "    for (uint16_t i = 0u; i <= 1u; ++i) {\n"
+                    "        Alpha_nonPrimitive[i].func(Bravo_a[Alpha_a[i]]);\n"
+                    "    }\n"
+                );
+            }
         }
     }
 }
