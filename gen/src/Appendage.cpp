@@ -88,18 +88,11 @@ namespace emb
         {
             std::string rv = "";
 
-            // TODO: Add appendage index mappers
-
             for (const parser::Variable& variable : m_xml->getVariables())
             {
-                if (!variable.getAppendage().empty())
-                {
-                    continue;
-                }
-
+                std::string otherAppendage = variable.getAppendage();
                 std::string variableType = variable.getType();
-
-                if (isPrimitive(variableType) || variableType == "String")
+                if ((isPrimitive(variableType) || variableType == "String") && otherAppendage.empty())
                 {
                     rv += variableType + " " +
                         m_xml->getName() + "_" +
@@ -116,50 +109,102 @@ namespace emb
 
                     rv += "};\n";
                 }
-                else
+                else if (!otherAppendage.empty())
                 {
-                    rv += variableType + " " +
+                    rv += "uint16_t " +
                         m_xml->getName() + "_" +
                         variable.getName() + "[" +
                         std::to_string(m_json.size()) + "]" + " = {\n";
 
-                    for (nlohmann::json appendage : m_json)
+                    for (auto& appendage : m_json.items())
                     {
-                        std::vector<parser::Parameter> parameters = variable.getParameters();
-                        
-                        if (parameters.empty())
-                        {
-                            rv += "    " + variableType + "(),\n";
-                        }
-                        else
-                        {
-                            rv += "    " + variableType + "(\n";
-
-                            for (int i = 0; i < parameters.size(); ++i)
-                            {
-                                const parser::Parameter& parameter = parameters[i];
-
-                                if (!parameter.getAppendage().empty())
-                                {
-                                    rv += "        " + parameter.getAppendage() + "_" + parameter.getName() +
-                                        "[" + m_xml->getName() + "_" + parameter.getName() + "[" + std::to_string(i) + "]],\n";
-                                }
-                                else
-                                {
-                                    rv += "        " + appendage.at(parameter.getName()).dump() +
-                                        ((parameter.getType() == "float") ? "f" : "") + ",\n";
-                                }
-                            }
-
-                            rv = rv.substr(0, rv.size() - 2) + "\n";
-
-                            rv += "    ),\n";
-                        }
+                        std::string otherType = variable.getAppendage();
+                        std::string variableName = variable.getName();
+                        std::string thisAppendageName = appendage.key();
+                        std::string otherAppendageName = appendage.value()[variable.getName()].get<std::string>();
+                        rv += "    " + m_appendages[variable.getAppendage()][appendage.value()[variable.getName()].get<std::string>()]["typeIndex"].dump() + "u,\n";
                     }
 
                     rv = rv.substr(0, rv.size() - 2) + "\n";
 
                     rv += "};\n";
+                }
+                else
+                {
+                    std::map<std::string, std::string> appendageIndexes;
+
+                    std::string type = variableType + " " +
+                        m_xml->getName() + "_" +
+                        variable.getName() + "[" +
+                        std::to_string(m_json.size()) + "]" + " = {\n";
+
+                    int i = 0;
+                    for (auto& appendage : m_json.items())
+                    {
+                        std::vector<parser::Parameter> parameters = variable.getParameters();
+                        
+                        if (parameters.empty())
+                        {
+                            type += "    " + variableType + "(),\n";
+                        }
+                        else
+                        {
+                            type += "    " + variableType + "(\n";
+
+                            for (int j = 0; j < parameters.size(); ++j)
+                            {
+                                const parser::Parameter& parameter = parameters[j];
+
+                                if (!parameter.getAppendage().empty())
+                                {
+                                    std::string otherType = parameter.getAppendage();
+                                    std::string variableName = parameter.getName();
+                                    std::string thisAppendageName = appendage.key();
+                                    std::string otherAppendageName = appendage.value()[parameter.getName()].get<std::string>();
+
+                                    appendageIndexes[parameter.getName()] += "    " + m_appendages[parameter.getAppendage()][appendage.value()[parameter.getName()].get<std::string>()]["typeIndex"].dump() + "u,\n";
+
+                                    char typeMod = parameter.getType().back();
+
+                                    type += std::string("        ") + ((typeMod == '*' || typeMod == '&') ? "&" : "") + parameter.getAppendage() + "_" +
+                                        parameter.getName() + "[" + m_xml->getName() + "_" + parameter.getName() + "[" + std::to_string(i) + "]],\n";
+                                }
+                                else
+                                {
+                                    type += "        " + appendage.value().at(parameter.getName()).dump() +
+                                        ((parameter.getType() == "float") ? "f" : "") + ",\n";
+                                }
+                            }
+
+                            type = type.substr(0, type.size() - 2) + "\n";
+
+                            type += "    ),\n";
+                        }
+                        i++;
+                    }
+
+                    type = type.substr(0, type.size() - 2) + "\n";
+
+                    type += "};\n";
+
+                    for (const parser::Parameter& parameter : variable.getParameters())
+                    {
+                        if (!parameter.getAppendage().empty())
+                        {
+                            rv += "uint16_t " +
+                                m_xml->getName() + "_" +
+                                parameter.getName() + "[" +
+                                std::to_string(m_json.size()) + "]" + " = {\n";
+
+                            rv += appendageIndexes[parameter.getName()];
+
+                            rv = rv.substr(0, rv.size() - 2) + "\n";
+
+                            rv += "};\n";
+                        }
+                    }
+
+                    rv += type;
                 }
             }
 
