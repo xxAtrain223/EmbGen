@@ -21,7 +21,7 @@ namespace emb
                 std::string includes = appendage.getIncludes();
                 if (!includes.empty())
                 {
-                    rv += appendage.getIncludes() + "\n";
+                    rv += includes + "\n";
                 }
             }
 
@@ -48,7 +48,11 @@ namespace emb
 
             for (const Appendage& appendage : m_appendages)
             {
-                rv += appendage.getVariables() + "\n";
+                std::string variables = appendage.getVariables();
+                if (!variables.empty())
+                {
+                    rv += variables + "\n";
+                }
             }
 
             rv = rv.substr(0, rv.size() - 2);
@@ -132,7 +136,11 @@ namespace emb
 
             for (const Appendage& appendage : m_appendages)
             {
-                rv += appendage.getCommandFunctions(messengerName) + "\n";
+                std::string functions = appendage.getCommandFunctions(messengerName);
+                if (!functions.empty())
+                {
+                    rv += functions + "\n";
+                }
             }
 
             if (!m_appendages.empty())

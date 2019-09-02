@@ -1,25 +1,27 @@
 <appendage name='Everything'>
     <include>HeaderOne.hpp</include>
     <include standard='true'>HeaderTwo.hpp</include>
-    <variable type='uint8_t' name='VarOne' />
-    <variable type='int16_t' name='VarTwo' />
+    <variable type='uint8_t' name='VarOne' appendage='Variable' />
+    <variable type='SomeType' name='VarThree'>
+        <parameter type='int16_t*' name='VarTwo' appendage='Variable' />
+    </variable>
     <setup>
         <code insert='each'>
             VarOne += 1;
-            VarTwo -= 1;
+            VarThree->VarTwo -= 1;
         </code>
         <code insert='once'>
             delay(500);
         </code>
         <code insert='each'>
-            VarTwo += 1;
+            VarThree->VarTwo += 1;
             VarOne -= 1;
         </code>
     </setup>
     <loop>
         <code>
             VarOne++;
-            VarTwo++;
+            VarThree->VarTwo++;
         </code>
     </loop>
     <command name='get'>
@@ -27,7 +29,7 @@
         <return_value type='int16_t' name='two' />
         <code>
             one = VarOne;
-            two = VarTwo;
+            two = VarThree->VarTwo;
         </code>
     </command>
     <command name='set'>
@@ -35,13 +37,13 @@
         <parameter type='int16_t' name='two' min='-1024' max='1024' />
         <code>
             VarOne = one;
-            VarTwo = two;
+            VarThree->VarTwo = two;
         </code>
     </command>
     <command name='zero'>
         <code>
             VarOne = 0;
-            VarTwo = 0;
+            VarThree->VarTwo = 0;
         </code>
     </command>
     <stop command='zero' />
