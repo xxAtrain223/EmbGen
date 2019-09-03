@@ -1,6 +1,6 @@
 <appendage name='Stop'>
     <variable type='uint8_t' name='VarOne' />
-    <variable type='int16_t' name='VarTwo' />
+    <variable type='int16_t' name='VarTwo' core='true' />
     <stop>
         <code>
             VarOne = 0;

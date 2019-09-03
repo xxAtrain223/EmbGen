@@ -50,6 +50,8 @@ namespace emb
 
             std::string getCommandFunctions(std::string messengerName) const;
 
+            std::shared_ptr<parser::Appendage> getXml() const;
+
             bool hasStop() const;
         };
     }

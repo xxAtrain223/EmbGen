@@ -60,6 +60,15 @@ namespace emb
                     "}\n"
                     "\n"
                 );
+
+                ASSERT_EQ(embGen.generateCore(),
+                    "{\n"
+                    "    \"appendages\": {},\n"
+                    "    \"commands\": {\n"
+                    "        \"all_stop\": 0\n"
+                    "    }\n"
+                    "}"
+                );
             }
 
             TEST(embgen_EmbGen, Include)
@@ -117,6 +126,24 @@ namespace emb
                     "{\n"
                     "}\n"
                     "\n"
+                );
+
+                ASSERT_EQ(embGen.generateCore(),
+                    "{\n"
+                    "    \"appendages\": {\n"
+                    "        \"Include\": {\n"
+                    "            \"include_alpha\": {\n"
+                    "                \"typeIndex\": 0\n"
+                    "            },\n"
+                    "            \"include_bravo\": {\n"
+                    "                \"typeIndex\": 1\n"
+                    "            }\n"
+                    "        }\n"
+                    "    },\n"
+                    "    \"commands\": {\n"
+                    "        \"all_stop\": 0\n"
+                    "    }\n"
+                    "}"
                 );
             }
 
@@ -187,6 +214,26 @@ namespace emb
                     "{\n"
                     "}\n"
                     "\n"
+                );
+
+                ASSERT_EQ(embGen.generateCore(),
+                    "{\n"
+                    "    \"appendages\": {\n"
+                    "        \"Variable\": {\n"
+                    "            \"variable_alpha\": {\n"
+                    "                \"VarTwo\": -2,\n"
+                    "                \"typeIndex\": 0\n"
+                    "            },\n"
+                    "            \"variable_bravo\": {\n"
+                    "                \"VarTwo\": -4,\n"
+                    "                \"typeIndex\": 1\n"
+                    "            }\n"
+                    "        }\n"
+                    "    },\n"
+                    "    \"commands\": {\n"
+                    "        \"all_stop\": 0\n"
+                    "    }\n"
+                    "}"
                 );
             }
 
@@ -266,6 +313,26 @@ namespace emb
                     "}\n"
                     "\n"
                 );
+
+                ASSERT_EQ(embGen.generateCore(),
+                    "{\n"
+                    "    \"appendages\": {\n"
+                    "        \"Setup\": {\n"
+                    "            \"setup_alpha\": {\n"
+                    "                \"VarTwo\": -2,\n"
+                    "                \"typeIndex\": 0\n"
+                    "            },\n"
+                    "            \"setup_bravo\": {\n"
+                    "                \"VarTwo\": -4,\n"
+                    "                \"typeIndex\": 1\n"
+                    "            }\n"
+                    "        }\n"
+                    "    },\n"
+                    "    \"commands\": {\n"
+                    "        \"all_stop\": 0\n"
+                    "    }\n"
+                    "}"
+                );
             }
 
             TEST(embgen_EmbGen, Loop)
@@ -339,6 +406,26 @@ namespace emb
                     "{\n"
                     "}\n"
                     "\n"
+                );
+
+                ASSERT_EQ(embGen.generateCore(),
+                    "{\n"
+                    "    \"appendages\": {\n"
+                    "        \"Loop\": {\n"
+                    "            \"loop_alpha\": {\n"
+                    "                \"VarTwo\": -2,\n"
+                    "                \"typeIndex\": 0\n"
+                    "            },\n"
+                    "            \"loop_bravo\": {\n"
+                    "                \"VarTwo\": -4,\n"
+                    "                \"typeIndex\": 1\n"
+                    "            }\n"
+                    "        }\n"
+                    "    },\n"
+                    "    \"commands\": {\n"
+                    "        \"all_stop\": 0\n"
+                    "    }\n"
+                    "}"
                 );
             }
 
@@ -460,6 +547,28 @@ namespace emb
                     "}\n"
                     "\n"
                 );
+
+                ASSERT_EQ(embGen.generateCore(),
+                    "{\n"
+                    "    \"appendages\": {\n"
+                    "        \"Command\": {\n"
+                    "            \"command_alpha\": {\n"
+                    "                \"VarTwo\": -2,\n"
+                    "                \"typeIndex\": 0\n"
+                    "            },\n"
+                    "            \"command_bravo\": {\n"
+                    "                \"VarTwo\": -4,\n"
+                    "                \"typeIndex\": 1\n"
+                    "            }\n"
+                    "        }\n"
+                    "    },\n"
+                    "    \"commands\": {\n"
+                    "        \"Command_get_adaptor\": 0,\n"
+                    "        \"Command_set_adaptor\": 1,\n"
+                    "        \"all_stop\": 2\n"
+                    "    }\n"
+                    "}"
+                );
             }
 
             TEST(embgen_EmbGen, Stop)
@@ -539,6 +648,27 @@ namespace emb
                     "    Stop_stop();\n"
                     "}\n"
                     "\n"
+                );
+
+                ASSERT_EQ(embGen.generateCore(),
+                    "{\n"
+                    "    \"appendages\": {\n"
+                    "        \"Stop\": {\n"
+                    "            \"stop_alpha\": {\n"
+                    "                \"VarTwo\": -2,\n"
+                    "                \"typeIndex\": 0\n"
+                    "            },\n"
+                    "            \"stop_bravo\": {\n"
+                    "                \"VarTwo\": -4,\n"
+                    "                \"typeIndex\": 1\n"
+                    "            }\n"
+                    "        }\n"
+                    "    },\n"
+                    "    \"commands\": {\n"
+                    "        \"Stop_stop\": 0,\n"
+                    "        \"all_stop\": 1\n"
+                    "    }\n"
+                    "}"
                 );
             }
 
@@ -728,6 +858,38 @@ namespace emb
                     "    Everything_stop();\n"
                     "}\n"
                     "\n"
+                );
+
+                ASSERT_EQ(embGen.generateCore(),
+                    "{\n"
+                    "    \"appendages\": {\n"
+                    "        \"Everything\": {\n"
+                    "            \"everything_alpha\": {\n"
+                    "                \"typeIndex\": 0\n"
+                    "            },\n"
+                    "            \"everything_bravo\": {\n"
+                    "                \"typeIndex\": 1\n"
+                    "            }\n"
+                    "        },\n"
+                    "        \"Variable\": {\n"
+                    "            \"variable_alpha\": {\n"
+                    "                \"VarTwo\": -2,\n"
+                    "                \"typeIndex\": 0\n"
+                    "            },\n"
+                    "            \"variable_bravo\": {\n"
+                    "                \"VarTwo\": -4,\n"
+                    "                \"typeIndex\": 1\n"
+                    "            }\n"
+                    "        }\n"
+                    "    },\n"
+                    "    \"commands\": {\n"
+                    "        \"Everything_get_adaptor\": 0,\n"
+                    "        \"Everything_set_adaptor\": 1,\n"
+                    "        \"Everything_stop\": 3,\n"
+                    "        \"Everything_zero_adaptor\": 2,\n"
+                    "        \"all_stop\": 4\n"
+                    "    }\n"
+                    "}"
                 );
             }
         }

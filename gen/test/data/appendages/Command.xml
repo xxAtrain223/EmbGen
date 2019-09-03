@@ -1,6 +1,6 @@
 <appendage name='Command'>
     <variable type='uint8_t' name='VarOne' />
-    <variable type='int16_t' name='VarTwo' />
+    <variable type='int16_t' name='VarTwo' core='true' />
     <command name='get'>
         <return_value type='uint8_t' name='one' />
         <return_value type='int16_t' name='two' />

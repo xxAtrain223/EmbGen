@@ -1,6 +1,6 @@
 <appendage name='Setup'>
     <variable type='uint8_t' name='VarOne' />
-    <variable type='int16_t' name='VarTwo' />
+    <variable type='int16_t' name='VarTwo' core='true' />
     <setup>
         <code insert='each'>
             VarOne += 1;

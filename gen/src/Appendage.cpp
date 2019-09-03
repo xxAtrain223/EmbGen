@@ -482,6 +482,11 @@ namespace emb
             return rv;
         }
 
+        std::shared_ptr<parser::Appendage> Appendage::getXml() const
+        {
+            return m_xml;
+        }
+
         bool Appendage::hasStop() const
         {
             return m_xml->getStop() != nullptr;

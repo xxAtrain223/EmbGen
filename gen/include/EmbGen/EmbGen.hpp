@@ -16,9 +16,7 @@ namespace emb
         {
             std::string m_inoTemplate;
 
-            //std::string m_messengerVariable;
-
-            //std::string m_registerCall;
+            nlohmann::json m_appendageJson;
 
             std::vector<Appendage> m_appendages;
 

@@ -175,6 +175,8 @@ namespace emb
                 }
             }
 
+            m_appendageJson = jsonConfig;
+
             for (auto& appendageType : jsonConfig.items())
             {
                 tinyxml2::XMLDocument tinyDocument;
@@ -254,8 +256,45 @@ namespace emb
 
         std::string EmbGen::generateCore() const
         {
-            return std::string();
-        }
+            nlohmann::json core;
 
+            core["appendages"] = nlohmann::json::object();
+            for (const Appendage& type : m_appendages)
+            {
+                uint16_t typeIndex = 0;
+                core["appendages"][type.getName()] = nlohmann::json::object();
+                for (const auto& name : m_appendageJson[type.getName()].items())
+                {
+                    core["appendages"][type.getName()][name.key()]["typeIndex"] = typeIndex++;
+                    for (const parser::Variable& variable : type.getXml()->getVariables())
+                    {
+                        if (variable.isCore())
+                        {
+                            core["appendages"][type.getName()][name.key()][variable.getName()] = name.value()[variable.getName()];
+                        }
+
+                        for (const parser::Parameter& parameter : variable.getParameters())
+                        {
+                            if (parameter.isCore())
+                            {
+                                core["appendages"][type.getName()][name.key()][parameter.getName()] = name.value()[parameter.getName()];
+                            }
+                        }
+                    }
+                }
+            }
+
+            uint16_t commands = 0;
+            for (const Appendage& appendage : m_appendages)
+            {
+                for (const std::string& commandName : appendage.getCommandNames())
+                {
+                    core["commands"][commandName] = commands++;
+                }
+            }
+            core["commands"]["all_stop"] = commands++;
+
+            return core.dump(4);
+        }
     }
 }
