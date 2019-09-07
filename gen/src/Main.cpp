@@ -123,4 +123,14 @@ int main(int argc, char* argv[])
     std::ofstream core_config_file(output_folder + "/core_config.json");
     core_config_file << core_config;
     core_config_file.close();
+
+    std::experimental::filesystem::create_directory(output_folder + "/appendages");
+
+    for (std::string appendage : generator->getAppendageNames())
+    {
+        std::experimental::filesystem::copy_file(
+            appendages_folder + "/" + appendage + ".xml",
+            output_folder + "/appendages/" + appendage + ".xml"
+        );
+    }
 }

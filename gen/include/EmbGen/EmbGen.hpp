@@ -40,6 +40,8 @@ namespace emb
             std::string generateSource() const;
 
             std::string generateCore() const;
+
+            std::vector<std::string> getAppendageNames() const;
         };
     }
 }

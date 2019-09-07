@@ -296,5 +296,16 @@ namespace emb
 
             return core.dump(4);
         }
+        std::vector<std::string> EmbGen::getAppendageNames() const
+        {
+            std::vector<std::string> rv;
+
+            for (const Appendage& appendage : m_appendages)
+            {
+                rv.emplace_back(appendage.getName());
+            }
+
+            return rv;
+        }
     }
 }
