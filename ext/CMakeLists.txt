@@ -11,3 +11,6 @@ endif()
 
 add_library(nlohmann_json INTERFACE)
 target_include_directories(nlohmann_json INTERFACE json/include)
+
+add_library(args INTERFACE)
+target_include_directories(args INTERFACE args)

@@ -1,4 +1,4 @@
-dist: trusty
+dist: bionic
 
 sudo: false
 
@@ -8,17 +8,10 @@ compiler: gcc
 
 addons:
     apt:
-        sources:
-            - ubuntu-toolchain-r-test
         packages:
-            - g++-4.9
-            - gcc-4.9
             - cmake
             - lcov
             - cppcheck
-
-install:
-    - if [ "$CXX" = "g++" ]; then export CXX="g++-4.9" CC="gcc-4.9"; fi
 
 before_script:
     - ./travis/before_script.sh
