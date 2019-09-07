@@ -9,7 +9,7 @@ pushd parser
 popd
 
 pushd gen
-./EmbGenTest
+./_EmbGenTest
 popd
 
 popd

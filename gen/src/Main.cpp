@@ -16,10 +16,10 @@ int main(int argc, char* argv[])
     args::CompletionFlag completion(parser, { "complete" });
     parser.Prog("EmbGen");
 
-    args::ValueFlag<std::string> config_arg(parser, "CONFIG", "Location of the config json file", { 'c', "config_arg" }, args::Options::Required | args::Options::Single);
+    args::ValueFlag<std::string> config_arg(parser, "CONFIG", "Location of the config json file", { 'c', "config" }, args::Options::Required | args::Options::Single);
     args::ValueFlag<std::string> template_arg(parser, "TEMPLATE", "Location of the template ino file", { 't', "template" }, args::Options::Required | args::Options::Single);
-    args::ValueFlag<std::string> output_folder_arg(parser, "OUTPUT_FOLDER", "Parent folder of the folder to put all the output files", { 'o', "output_folder_arg" }, args::Options::Required | args::Options::Single);
-    args::ValueFlag<std::string> appendages_arg(parser, "APPENDAGES_FOLDER", "Folder of where to look for appendage files", { 'a', "appendages_arg" }, args::Options::Required | args::Options::Single);
+    args::ValueFlag<std::string> output_folder_arg(parser, "OUTPUT_FOLDER", "Parent folder of the folder to put all the output files", { 'o', "output_folder" }, args::Options::Required | args::Options::Single);
+    args::ValueFlag<std::string> appendages_arg(parser, "APPENDAGES_FOLDER", "Folder of where to look for appendage files", { 'a', "appendages" }, args::Options::Required | args::Options::Single);
 
     try
     {
