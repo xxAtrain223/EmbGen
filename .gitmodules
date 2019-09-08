@@ -1,12 +1,12 @@
 [submodule "ext/googletest"]
 	path = ext/googletest
 	url = https://github.com/google/googletest.git
-[submodule "ext/tinyxml2"]
-	path = ext/tinyxml2
-	url = https://github.com/leethomason/tinyxml2.git
 [submodule "ext/json"]
 	path = ext/json
 	url = https://github.com/nlohmann/json.git
 [submodule "ext/args"]
 	path = ext/args
 	url = https://github.com/Taywee/args.git
+[submodule "ext/EmbGenParser"]
+	path = ext/EmbGenParser
+	url = https://github.com/xxAtrain223/EmbGenParser.git

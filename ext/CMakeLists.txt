@@ -1,10 +1,9 @@
 cmake_minimum_required(VERSION 2.6 FATAL_ERROR)
 project(ext)
 
-add_library(tinyxml2 tinyxml2/tinyxml2.cpp)
-target_include_directories(tinyxml2 PUBLIC tinyxml2)
+add_subdirectory(EmbGenParser)
 
-if (EMB_ENABLE_TESTING)
+if (NOT TARGET gtest AND EmbGen_ENABLE_TESTING)
     set(gtest_force_shared_crt TRUE CACHE BOOL "")
     add_subdirectory(googletest)
 endif()
