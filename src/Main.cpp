@@ -8,6 +8,7 @@
 
 #include <EmbGen/EmbGen.hpp>
 
+namespace fs = std::experimental::filesystem;
 
 int main(int argc, char* argv[])
 {
@@ -59,15 +60,13 @@ int main(int argc, char* argv[])
     std::string output_folder = args::get(output_folder_arg);
     std::string appendages_folder = args::get(appendages_arg);
 
-    struct stat output_folder_stat;
-    if (stat(output_folder.c_str(), &output_folder_stat) != 0 && !(output_folder_stat.st_mode & S_IFDIR))
+    if (!fs::is_directory(output_folder))
     {
         std::cerr << "The output folder " << output_folder << " doesn't exist." << std::endl;
         return EXIT_FAILURE;
     }
 
-    struct stat appendages_folder_stat;
-    if (stat(appendages_folder.c_str(), &appendages_folder_stat) != 0 && !(output_folder_stat.st_mode & S_IFDIR))
+    if (!fs::is_directory(appendages_folder))
     {
         std::cerr << "The appendages folder " << appendages_folder << " doesn't exist." << std::endl;
         return EXIT_FAILURE;
@@ -114,7 +113,7 @@ int main(int argc, char* argv[])
         return EXIT_FAILURE;
     }
 
-    std::experimental::filesystem::create_directory(output_folder + "/main");
+    fs::create_directory(output_folder + "/main");
 
     std::ofstream source_file(output_folder + "/main/main.ino");
     source_file << source;
@@ -124,11 +123,11 @@ int main(int argc, char* argv[])
     core_config_file << core_config;
     core_config_file.close();
 
-    std::experimental::filesystem::create_directory(output_folder + "/appendages");
+    fs::create_directory(output_folder + "/appendages");
 
     for (std::string appendage : generator->getAppendageNames())
     {
-        std::experimental::filesystem::copy_file(
+        fs::copy_file(
             appendages_folder + "/" + appendage + ".xml",
             output_folder + "/appendages/" + appendage + ".xml"
         );
