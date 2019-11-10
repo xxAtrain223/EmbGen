@@ -184,7 +184,14 @@ namespace emb
                                     std::string value;
                                     try
                                     {
-                                        value = appendage.value().at(parameter.getName()).dump();
+                                        if (parameter.getType() == "string_literal")
+                                        {
+                                            value = appendage.value().at(parameter.getName()).get<std::string>();
+                                        }
+                                        else
+                                        {
+                                            value = appendage.value().at(parameter.getName()).dump();
+                                        }
                                     }
                                     catch (nlohmann::json::out_of_range)
                                     {
