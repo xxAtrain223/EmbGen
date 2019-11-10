@@ -101,8 +101,20 @@ namespace emb
 
                     for (nlohmann::json appendage : m_json)
                     {
-                        rv += "    " + appendage.at(variable.getName()).dump() + 
-                            ((variableType == "float") ? "f" : "") + ",\n";
+                        std::string value;
+                        try
+                        {
+                            value = appendage.at(variable.getName()).dump();
+                        }
+                        catch (nlohmann::json::out_of_range)
+                        {
+                            value = variable.getDefault();
+                            if (value == "")
+                            {
+                                throw;
+                            }
+                        }
+                        rv += "    " + value + ((variableType == "float") ? "f" : "") + ",\n";
                     }
 
                     rv = rv.substr(0, rv.size() - 2) + "\n";
@@ -120,9 +132,8 @@ namespace emb
                     {
                         std::string otherType = variable.getAppendage();
                         std::string variableName = variable.getName();
-                        std::string thisAppendageName = appendage.key();
-                        std::string otherAppendageName = appendage.value()[variable.getName()].get<std::string>();
-                        rv += "    " + m_appendages[variable.getAppendage()][appendage.value()[variable.getName()].get<std::string>()]["typeIndex"].dump() + "u,\n";
+                        std::string otherAppendageName = appendage.value()[variableName].get<std::string>();
+                        rv += "    " + m_appendages[otherType][otherAppendageName]["typeIndex"].dump() + "u,\n";
                     }
 
                     rv = rv.substr(0, rv.size() - 2) + "\n";
@@ -158,21 +169,32 @@ namespace emb
                                 if (!parameter.getAppendage().empty())
                                 {
                                     std::string otherType = parameter.getAppendage();
-                                    std::string variableName = parameter.getName();
-                                    std::string thisAppendageName = appendage.key();
-                                    std::string otherAppendageName = appendage.value()[parameter.getName()].get<std::string>();
+                                    std::string parameterName = parameter.getName();
+                                    std::string otherAppendageName = appendage.value()[parameterName].get<std::string>();
 
-                                    appendageIndexes[parameter.getName()] += "    " + m_appendages[parameter.getAppendage()][appendage.value()[parameter.getName()].get<std::string>()]["typeIndex"].dump() + "u,\n";
+                                    appendageIndexes[parameter.getName()] += "    " + m_appendages[otherType][otherAppendageName]["typeIndex"].dump() + "u,\n";
 
                                     char typeMod = parameter.getType().back();
 
-                                    type += std::string("        ") + ((typeMod == '*' || typeMod == '&') ? "&" : "") + parameter.getAppendage() + "_" +
-                                        parameter.getName() + "[" + m_xml->getName() + "_" + parameter.getName() + "[" + std::to_string(i) + "]],\n";
+                                    type += std::string("        ") + ((typeMod == '*' || typeMod == '&') ? "&" : "") + otherType + "_" +
+                                        parameterName + "[" + m_xml->getName() + "_" + parameterName + "[" + std::to_string(i) + "]],\n";
                                 }
                                 else
                                 {
-                                    type += "        " + appendage.value().at(parameter.getName()).dump() +
-                                        ((parameter.getType() == "float") ? "f" : "") + ",\n";
+                                    std::string value;
+                                    try
+                                    {
+                                        value = appendage.value().at(parameter.getName()).dump();
+                                    }
+                                    catch (nlohmann::json::out_of_range)
+                                    {
+                                        value = parameter.getDefault();
+                                        if (value == "")
+                                        {
+                                            throw;
+                                        }
+                                    }
+                                    type += "        " + value + ((parameter.getType() == "float") ? "f" : "") + ",\n";
                                 }
                             }
 
