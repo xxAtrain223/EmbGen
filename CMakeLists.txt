@@ -53,7 +53,7 @@ else()
     endif()
 
     add_executable(${PROJECT_NAME}Main "src/main.cpp" ${template_ino})
-    set_target_properties(${PROJECT_NAME}Main PROPERTIES CXX_STANDARD 14 CXX_STANDARD_REQUIRED YES)
+    set_target_properties(${PROJECT_NAME}Main PROPERTIES CXX_STANDARD 17 CXX_STANDARD_REQUIRED YES)
     target_link_libraries(${PROJECT_NAME}Main ${PROJECT_NAME} args)
     
     if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU")

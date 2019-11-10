@@ -1,4 +1,4 @@
-#include <EmbMessenger/SerialBuffer.hpp>
+#include "SerialBuffer.hpp"
 /*** EMBGEN_INCLUDES ***/
 
 SerialBuffer<64> buffer(&Serial);
@@ -6,6 +6,7 @@ SerialBuffer<64> buffer(&Serial);
 
 void setup()
 {
+    Serial.begin(9600);
     if (!registerCommands())
     {
         pinMode(LED_BUILTIN, OUTPUT);

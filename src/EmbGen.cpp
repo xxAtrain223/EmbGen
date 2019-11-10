@@ -7,6 +7,7 @@
 
 #include <regex>
 #include <set>
+#include <fstream>
 
 namespace emb
 {
@@ -161,6 +162,76 @@ namespace emb
             return rv;
         }
 
+        std::string xmlEncode(const std::string& str)
+        {
+            std::string rv = "";
+
+            for (char c : str)
+            {
+                switch (c)
+                {
+                case '"':
+                    rv += "&quot;";
+                    break;
+                case '\'':
+                    rv += "&apos;";
+                    break;
+                case '<':
+                    rv += "&lt;";
+                    break;
+                case '>':
+                    rv += "&gt;";
+                    break;
+                case '&':
+                    rv += "&amp;";
+                    break;
+                default:
+                    rv += c;
+                    break;
+                }
+            }
+
+            return rv;
+        }
+
+        tinyxml2::XMLError loadXmlFile(tinyxml2::XMLDocument& doc, const std::string& filename, const std::vector<std::string>& elements_to_escape)
+        {
+            std::string escaped, expression, suffix;
+
+            std::ifstream file_stream(filename);
+            std::string file((std::istreambuf_iterator<char>(file_stream)),
+                std::istreambuf_iterator<char>());
+
+            for (std::string element : elements_to_escape)
+            {
+                // https://regex101.com/r/ECLQuZ/1
+                expression = "(<(?:" + element + ").*>)((?:[\\r\\n]|.)*?)(<\\/(?:" + element + ").*>)";
+                std::regex reg(expression);
+                std::sregex_iterator re_it(file.begin(), file.end(), reg), re_it_end;
+
+                // Make sure there is a match
+                if (re_it != re_it_end)
+                {
+                    escaped = "";
+
+                    // Iterate through the matches
+                    for (; re_it != re_it_end; ++re_it)
+                    {
+                        escaped += re_it->prefix().str();    // Everything before this match
+                        escaped += re_it->str(1);            // Element Start Tag
+                        escaped += xmlEncode(re_it->str(2)); // Element Contents
+                        escaped += re_it->str(3);            // Element End Tag
+                        suffix = re_it->suffix().str();      // Everything after this match
+                    }
+                    escaped += suffix;
+
+                    file = escaped;
+                }
+            }
+
+            return doc.Parse(file.c_str());;
+        }
+        
         EmbGen::EmbGen(std::string config, std::string appendage_folder, std::string inoTemplate) :
             m_inoTemplate(inoTemplate)
         {
@@ -180,7 +251,7 @@ namespace emb
             for (auto& appendageType : jsonConfig.items())
             {
                 tinyxml2::XMLDocument tinyDocument;
-                if (tinyDocument.LoadFile((appendage_folder + "/" + appendageType.key() + ".xml").c_str()) != tinyxml2::XMLError::XML_SUCCESS)
+                if (loadXmlFile(tinyDocument, appendage_folder + "/" + appendageType.key() + ".xml", { "code" }) != tinyxml2::XMLError::XML_SUCCESS)
                 {
                     throw XmlParseException(tinyDocument.ErrorStr());
                 }
@@ -296,6 +367,7 @@ namespace emb
 
             return core.dump(4);
         }
+
         std::vector<std::string> EmbGen::getAppendageNames() const
         {
             std::vector<std::string> rv;

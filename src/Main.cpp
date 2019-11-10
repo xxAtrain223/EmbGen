@@ -2,13 +2,18 @@
 #include <fstream>
 #include <sys/stat.h>
 #include <memory>
-#include <experimental/filesystem>
 
 #include <args.hxx>
 
 #include <EmbGen/EmbGen.hpp>
 
+#if __has_include(<filesystem>)
+#include <filesystem>
+namespace fs = std::filesystem;
+#elif __has_include(<experimental/filesystem>)
+#include <experimental/filesystem>
 namespace fs = std::experimental::filesystem;
+#endif
 
 int main(int argc, char* argv[])
 {
@@ -55,10 +60,10 @@ int main(int argc, char* argv[])
         return EXIT_FAILURE;
     }
 
-    std::string config_filename = args::get(config_arg);
-    std::string template_filename = args::get(template_arg);
-    std::string output_folder = args::get(output_folder_arg);
-    std::string appendages_folder = args::get(appendages_arg);
+    fs::path config_filename = args::get(config_arg);
+    fs::path template_filename = args::get(template_arg);
+    fs::path output_folder = args::get(output_folder_arg);
+    fs::path appendages_folder = args::get(appendages_arg);
 
     if (!fs::is_directory(output_folder))
     {
@@ -83,7 +88,7 @@ int main(int argc, char* argv[])
     std::unique_ptr<emb::gen::EmbGen> generator;
     try
     {
-        generator = std::make_unique<emb::gen::EmbGen>(config, appendages_folder, ino_template);
+        generator = std::make_unique<emb::gen::EmbGen>(config, appendages_folder.string(), ino_template);
     }
     catch (const std::exception& e)
     {
@@ -113,23 +118,24 @@ int main(int argc, char* argv[])
         return EXIT_FAILURE;
     }
 
-    fs::create_directory(output_folder + "/main");
+    fs::create_directory(output_folder / "src");
 
-    std::ofstream source_file(output_folder + "/main/main.ino");
+    std::ofstream source_file(output_folder / "src/main.ino");
     source_file << source;
     source_file.close();
 
-    std::ofstream core_config_file(output_folder + "/core_config.json");
+    std::ofstream core_config_file(output_folder / "core_config.json");
     core_config_file << core_config;
     core_config_file.close();
 
-    fs::create_directory(output_folder + "/appendages");
+    fs::create_directory(output_folder / "appendages");
 
     for (std::string appendage : generator->getAppendageNames())
     {
         fs::copy_file(
-            appendages_folder + "/" + appendage + ".xml",
-            output_folder + "/appendages/" + appendage + ".xml"
+            appendages_folder / (appendage + ".xml"),
+            output_folder / "appendages" / (appendage + ".xml"),
+            fs::copy_options::overwrite_existing
         );
     }
 }
