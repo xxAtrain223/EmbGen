@@ -43,9 +43,35 @@ namespace emb
             return std::to_string(commandCount + 1) + "u";
         }
 
-        std::string EmbGen::generateVariables(std::string messengerConstructor) const
+        std::string getMessengerName(std::string messengerConstructor)
         {
-            std::string rv = "emb::device::EmbMessenger<" + getCommandCount() + ", 0> " + messengerConstructor + ";\n\n";
+            std::regex nameRegex(R"(^(\w+)\()");
+            std::smatch match;
+
+            if (!std::regex_search(messengerConstructor, match, nameRegex))
+            {
+                throw InoTemplateException("EMBGEN_VARIABLES comment malformed, no messenger");
+            }
+
+            return match.str(1);
+        }
+
+        std::string getMessengerBufferName(std::string messengerConstructor)
+        {
+            std::regex bufferRegex(R"(\((.*?)[,)])");
+            std::smatch match;
+
+            if (!std::regex_search(messengerConstructor, match, bufferRegex))
+            {
+                throw InoTemplateException("EMBGEN_VARIABLES comment malfored, no buffer");
+            }
+
+            return match.str(1);
+        }
+
+        std::string EmbGen::generateVariables(std::string messengerName) const
+        {
+            std::string rv = "extern emb::device::EmbMessenger<0> " + messengerName + ";\n\n";
 
             for (const Appendage& appendage : m_appendages)
             {
@@ -101,39 +127,11 @@ namespace emb
             return rv;
         }
 
-        std::string EmbGen::generateCommandRegisters(std::string messengerName, std::string registerCall, int indentWidth) const
-        {
-            std::regex registerRegex(R"((.*)registerCommand\(\)(.*))");
-            std::smatch match;
-            std::regex_search(registerCall, match, registerRegex);
-
-            std::string rv = "";
-            uint16_t count = 0;
-
-            std::string indent = "";
-            for (int i = 0; i < indentWidth; ++i)
-            {
-                indent += " ";
-            }
-
-            bool hasCommands = false;
-
-            for (const Appendage& appendage : m_appendages)
-            {
-                for (const std::string& commandName : appendage.getCommandNames())
-                {
-                    rv += indent + match.str(1) + messengerName + ".registerCommand(" + std::to_string(count++) + "u, " + commandName + ")" + match.str(2) + "\n";
-                }
-            }
-
-            rv += indent + match.str(1) + messengerName + ".registerCommand(" + std::to_string(count++) + "u, all_stop)" + match.str(2);
-
-            return rv;
-        }
-
-        std::string EmbGen::generateCommandFunctions(std::string messengerName) const
+        std::string EmbGen::generateCommandFunctions(std::string messengerConstructor) const
         {
             std::string rv = "";
+
+            std::string messengerName = getMessengerName(messengerConstructor);
 
             for (const Appendage& appendage : m_appendages)
             {
@@ -157,7 +155,20 @@ namespace emb
                     rv += "    " + appendage.getName() + "_stop();\n";
                 }
             }
-            rv += "}\n";
+            rv += "}\n\n";
+
+            rv += "const emb::device::EmbMessenger<>::CommandFunction commands[] PROGMEM = {\n";
+            for (const Appendage& appendage : m_appendages)
+            {
+                for (const std::string& command : appendage.getCommandNames())
+                {
+                    rv += "    " + command + ",\n";
+                }
+            }
+            rv += "    all_stop\n};\n\n";
+
+
+            rv += "emb::device::EmbMessenger<0> " + messengerName + "(" + getMessengerBufferName(messengerConstructor) + ", commands, " + getCommandCount() + ");\n";
 
             return rv;
         }
@@ -275,19 +286,6 @@ namespace emb
             return match.str(1);
         }
 
-        std::string getMessengerName(std::string messengerConstructor)
-        {
-            std::regex nameRegex(R"(^(\w+)\()");
-            std::smatch match;
-            
-            if (!std::regex_search(messengerConstructor, match, nameRegex))
-            {
-                throw InoTemplateException("EMBGEN_VARIABLES comment malformed");
-            }
-
-            return match.str(1);
-        }
-
         std::string replaceComment(const std::string& inoTemplate, const std::string& commentName, const std::string& value)
         {
             return std::regex_replace(inoTemplate,
@@ -295,32 +293,17 @@ namespace emb
                 value);
         }
 
-        int getRegisterIndent(const std::string& inoTemplate)
-        {
-            std::regex indentRegex(R"(([^\n]*)(?:\/\*+\s*)EMBGEN(?:_|-)REGISTER(?:[^\n]*?\*+\/)[ \t]*)");
-            std::smatch match;
-
-            if (!std::regex_search(inoTemplate, match, indentRegex))
-            {
-                throw InoTemplateException("EMBGEN_REGISTER comment malformed");
-            }
-
-            return std::regex_replace(match.str(1), std::regex("\t"), "    ").size();
-        }
-
         std::string EmbGen::generateSource() const
         {
             std::string messengerConstructor = getCommentValue(m_inoTemplate, "VARIABLES");
             std::string messengerName = getMessengerName(messengerConstructor);
-            std::string registerCall = getCommentValue(m_inoTemplate, "REGISTER");
             std::string ino = m_inoTemplate;
 
             ino = replaceComment(ino, "INCLUDES", generateIncludes());
-            ino = replaceComment(ino, "VARIABLES", generateVariables(messengerConstructor));
+            ino = replaceComment(ino, "VARIABLES", generateVariables(messengerName));
             ino = replaceComment(ino, "SETUP", generateSetup());
             ino = replaceComment(ino, "LOOP", generateLoop(messengerName));
-            ino = replaceComment(ino, "REGISTER", generateCommandRegisters(messengerName, registerCall, getRegisterIndent(ino)));
-            ino = replaceComment(ino, "COMMANDS", generateCommandFunctions(messengerName));
+            ino = replaceComment(ino, "COMMANDS", generateCommandFunctions(messengerConstructor));
 
             return ino;
         }

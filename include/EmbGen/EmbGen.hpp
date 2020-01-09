@@ -24,15 +24,13 @@ namespace emb
 
             std::string getCommandCount() const;
 
-            std::string generateVariables(std::string messengerConstructor) const;
+            std::string generateVariables(std::string messengerName) const;
 
             std::string generateSetup() const;
 
             std::string generateLoop(std::string messengerName) const;
 
-            std::string generateCommandRegisters(std::string messengerName, std::string registerCall, int indentWidth) const;
-
-            std::string generateCommandFunctions(std::string messengerName) const;
+            std::string generateCommandFunctions(std::string messengerConstructor) const;
 
         public:
             EmbGen(std::string config, std::string appendage_folder, std::string inoTemplate);
